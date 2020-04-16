@@ -1,0 +1,177 @@
+{% extends 'activist_layout.html' %}
+
+{% block css %}
+
+    <style type="text/css">
+        ::-webkit-scrollbar {
+            display: none
+        }
+
+        .div-center {
+            width: 100%;
+            margin: 0 auto;
+        }
+
+        .formCenter {
+            width: 100%;
+            height: 250px;
+            margin: 0 auto;
+            margin-top: 5px;
+            overflow: scroll;
+        }
+
+    </style>
+
+
+{% endblock %}
+
+
+{% block content %}
+
+    <!-- Start content-page -->
+    <div class="content-page">
+
+        <!-- Start content-bar -->
+        <div class="content">
+
+            <div class="container-fluid">
+
+                <div class="row">
+                    <div class="col-xl-12">
+                        <div class="breadcrumb-holder">
+                            <h1 class="main-title float-left">我的党课</h1>
+                            <ol class="breadcrumb float-right">
+                                <li class="breadcrumb-item"></li>
+                                <li class="breadcrumb-item active"></li>
+                            </ol>
+                            <div class="clearfix"></div>
+                        </div>
+                    </div>
+                </div>
+                <!-- end row -->
+            </div>
+
+            <div class="row">
+
+                <div class="div-center">
+                    <div class="card mb-3">
+                        <div class="card-header">
+                            <h3><i class="fa fa-table"></i> 出席党课 - {{ count.attend }}次</h3>
+                        </div>
+
+                        <div class="card-body formCenter">
+
+                            <table class="table table-hover">
+                                <thead>
+                                <tr>
+                                    <th>编号</th>
+                                    <th>日期</th>
+                                    <th>地点</th>
+                                    <th>标题</th>
+                                    <th>到课人数</th>
+                                    <th>到课名单</th>
+                                    <th>缺课人数</th>
+                                    <th>缺课名单</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+
+                                {% for row in data_list_attend %}
+
+                                    <tr>
+                                        <th scope="row">{{ row.id }}</th>
+                                        <td>{{ row.date|date:'Y-m-d' }}</td>
+                                        <td>{{ row.place }}</td>
+                                        <td>{{ row.title }}</td>
+                                        <td>{{ row.attend_num }}</td>
+                                        <td><select style="width: 80px">
+                                            {% for item in row.attendance %}
+                                                <option value={{ item }}>{{ item }}</option>
+                                            {% endfor %}
+                                        </select></td>
+                                        <td>{{ row.absent_num }}</td>
+                                        <td><select style="width: 80px">
+                                            {% for item in row.absence %}
+                                                <option value={{ item }}>{{ item }}</option>
+                                            {% endfor %}
+                                        </select></td>
+
+                                    </tr>
+
+                                {% endfor %}
+
+                                </tbody>
+                            </table>
+
+                        </div>
+                    </div><!-- end card-->
+                </div>
+
+            </div>
+
+            <div class="row">
+
+                <div class="div-center">
+                    <div class="card mb-3">
+                        <div class="card-header">
+                            <h3><i class="fa fa-table"></i> 缺席党课 - {{ count.absent }}次</h3>
+                        </div>
+
+                        <div class="card-body formCenter">
+
+                             <table class="table table-hover">
+                                <thead>
+                                <tr>
+                                    <th>编号</th>
+                                    <th>日期</th>
+                                    <th>地点</th>
+                                    <th>标题</th>
+                                    <th>到课人数</th>
+                                    <th>到课名单</th>
+                                    <th>缺课人数</th>
+                                    <th>缺课名单</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+
+                                {% for row in data_list_absent %}
+
+                                    <tr>
+                                        <th scope="row">{{ row.id }}</th>
+                                        <td>{{ row.date|date:'Y-m-d' }}</td>
+                                        <td>{{ row.place }}</td>
+                                        <td>{{ row.title }}</td>
+                                        <td>{{ row.attend_num }}</td>
+                                        <td><select style="width: 80px">
+                                            {% for item in row.attendance %}
+                                                <option value={{ item }}>{{ item }}</option>
+                                            {% endfor %}
+                                        </select></td>
+                                        <td>{{ row.absent_num }}</td>
+                                        <td><select style="width: 80px">
+                                            {% for item in row.absence %}
+                                                <option value={{ item }}>{{ item }}</option>
+                                            {% endfor %}
+                                        </select></td>
+
+                                    </tr>
+
+                                {% endfor %}
+
+                                </tbody>
+                            </table>
+
+                        </div>
+                    </div><!-- end card-->
+                </div>
+
+            </div>
+
+
+        </div>
+        <!-- END content-bar -->
+
+    </div>
+    <!-- End content-page -->
+
+{% endblock %}

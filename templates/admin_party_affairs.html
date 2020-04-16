@@ -1,0 +1,135 @@
+{% extends 'admin_layout.html' %}
+
+{% block css %}
+
+    <style type="text/css">
+
+    img{
+        height: 6rem;
+        border-radius: 3px;
+    }
+
+    </style>
+
+
+{% endblock %}
+
+
+{% block content %}
+
+    <!-- Start content-page -->
+    <div class="content-page">
+
+        <!-- Start content-bar -->
+        <div class="content">
+
+            <div class="container-fluid">
+
+                <div class="row">
+                    <div class="col-xl-12">
+                        <div class="breadcrumb-holder">
+                            <h1 class="main-title float-left">党务管理</h1>
+                            <ol class="breadcrumb float-right">
+                                <li class="breadcrumb-item"></li>
+                                <li class="breadcrumb-item active"></li>
+                            </ol>
+                            <div class="clearfix"></div>
+                        </div>
+                    </div>
+                </div>
+                <!-- end row -->
+            </div>
+            <div class="row">
+
+                <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6 col-xl-6">
+                    <div class="card mb-3">
+
+
+                        <div class="card-body">
+                            <div class="card">
+                                <img class="card-img-top" src="/static/img/img01.jpg" alt="Card image cap">
+                                <div class="card-body">
+                                    <h4 class="card-title">会议记录</h4>
+                                    <p class="card-text">可以进行查看会议、录入会议、编辑会议和删除会议等操作</p>
+                                    <a href="/admin_meeting_record/" class="btn btn-primary">点击进入</a>
+                                </div>
+                            </div>
+
+
+                        </div>
+                    </div><!-- end card-->
+                </div>
+
+                <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6 col-xl-6">
+                    <div class="card mb-3">
+
+
+                        <div class="card-body">
+                            <div class="card">
+                                <img class="card-img-top" src="/static/img/img02.jpg" alt="Card image cap">
+                                <div class="card-body">
+                                    <h4 class="card-title">党课记录</h4>
+                                    <p class="card-text">可以进行查看党课、录入党课、编辑党课和删除党课等操作</p>
+                                    <a href="/admin_lecture_record/" class="btn btn-primary">点击进入</a>
+                                </div>
+                            </div>
+
+
+                        </div>
+                    </div><!-- end card-->
+                </div>
+
+            </div>
+            <div class="row">
+
+               <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6 col-xl-6">
+                    <div class="card mb-3">
+
+
+                        <div class="card-body">
+                            <div class="card">
+                                <img class="card-img-top" src="/static/img/img03.jpg" alt="Card image cap">
+                                <div class="card-body">
+                                    <h4 class="card-title">党日活动管理</h4>
+                                    <p class="card-text">可以进行查看党日活动、发布党日活动、编辑党日活动、启动/停止报名和删除党日活动等操作</p>
+                                    <a href="/admin_activity_manage/" class="btn btn-primary">点击进入</a>
+                                </div>
+                            </div>
+
+
+                        </div>
+                    </div><!-- end card-->
+                </div>
+
+                <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6 col-xl-6">
+                    <div class="card mb-3">
+
+
+                        <div class="card-body">
+                            <div class="card">
+                                <img class="card-img-top" src="/static/img/img04.jpg" alt="Card image cap">
+                                <div class="card-body">
+                                    <h4 class="card-title">奖惩管理</h4>
+                                    <p class="card-text">可以进行奖励惩罚对应等级内容的设置、给某位党员设置奖惩信息、和重置所有党员奖惩信息等操作</p>
+                                    <a href="/admin_reward_punish/" class="btn btn-primary">点击进入</a>
+                                </div>
+                            </div>
+
+
+                        </div>
+                    </div><!-- end card-->
+                </div>
+
+            </div>
+
+
+        </div>
+        <!-- END content-bar -->
+
+        <!-- Start content -->
+        <!-- End content -->
+
+    </div>
+    <!-- End content-page -->
+
+{% endblock %}

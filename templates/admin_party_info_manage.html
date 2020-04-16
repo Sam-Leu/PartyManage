@@ -1,0 +1,211 @@
+{% extends 'admin_layout.html' %}
+
+{% block css %}
+
+    <style type="text/css">
+        .formCenter {
+            width: 50%;
+            margin: 0 auto;
+            margin-top: 5px;
+            margin-bottom: 10px;
+            text-align: center;
+        }
+        .textCenter {
+            margin: 0 auto;
+            margin-top: 5px;
+            text-align: center;
+        }
+
+        td {
+            width: 180px;
+            display: table-cell;
+            text-align: center;
+            vertical-align: middle;
+        }
+
+        .btn_center {
+            width: 50%;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        .table-space {
+            border-collapse: separate;
+            border-spacing: 5px 15px; /* 水平间距 垂直间距 */
+
+        }
+
+    </style>
+
+
+{% endblock %}
+
+
+{% block content %}
+
+    <!-- Start content-page -->
+    <div class="content-page">
+
+        <!-- Start content-bar -->
+        <div class="content">
+
+            <div class="container-fluid">
+
+                <div class="row">
+                    <div class="col-xl-12">
+                        <div class="breadcrumb-holder">
+                            <h1 class="main-title float-left">组织信息管理</h1>
+                            <ol class="breadcrumb float-right">
+                                <li class="breadcrumb-item"></li>
+                                <li class="breadcrumb-item active"></li>
+                            </ol>
+                            <div class="clearfix"></div>
+                        </div>
+                    </div>
+                </div>
+                <!-- end row -->
+            </div>
+
+
+        </div>
+        <!-- END content-bar -->
+
+        <div class="card mb-3 formCenter">
+            <div class="card-header">
+                <h3><i class="fa fa-user"></i> 当前组织信息</h3>
+            </div>
+
+            <div class="card-body ">
+
+                <table class="table-space" style="margin-right: 20px">
+                    <tr>
+                        <td colspan="1">组织名称</td>
+
+                        <td colspan="3"><input type="text" class="form-control" disabled="disabled"
+                                               value="{{ data.party_name }}">
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td>支部书记</td>
+                        <td><input type="text" class="form-control" disabled="disabled"
+                                   value="{{ data.party_secretary }}">
+                        </td>
+                        <td>组织委员</td>
+                        <td><input type="text" class="form-control" disabled="disabled"
+                                   value="{{ data.party_organizer }}">
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td>宣传委员</td>
+                        <td><input type="text" class="form-control" disabled="disabled"
+                                   value="{{ data.party_publicity }}">
+                        </td>
+                        <td>纪检委员</td>
+                        <td><input type="text" class="form-control" disabled="disabled"
+                                   value="{{ data.party_discipline }}">
+                        </td>
+                    </tr>
+                </table>
+            </div>
+
+        </div>
+
+        <div class="card mb-3 formCenter">
+            <div class="card-header">
+                <h3><i class="fa fa-user"></i> 修改组织信息</h3>
+            </div>
+
+            <div class="card-body ">
+
+                <form method="POST" action="/admin_party_info_manage/">
+                    {% csrf_token %}
+                    <table class="table-space" style="margin-right: 20px">
+                        <tr>
+                            <td colspan="1">组织名称</td>
+
+                            <td colspan="3">
+                                <input type="text" name="party_name" class="form-control"
+                                       value="{{ data.party_name }}">
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td>支部书记</td>
+                            <td>
+                                <select name="party_secretary" style="width: 100%" class="form-control">
+                                    <option value="0">请选择党员</option>
+                                    {% for row in member_list %}
+                                        <option value="{{ row.member_id }}">{{ row.member_name }}</option>
+                                    {% endfor %}
+                                </select>
+                            </td>
+                            <td>组织委员</td>
+                            <td>
+                                <select name="party_organizer" style="width: 100%" class="form-control">
+                                    <option value="0">请选择党员</option>
+                                    {% for row in member_list %}
+                                        <option value="{{ row.member_id }}">{{ row.member_name }}</option>
+                                    {% endfor %}
+                                </select>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td>宣传委员</td>
+                            <td>
+                                <select name="party_publicity" style="width: 100%" class="form-control">
+                                    <option value="0">请选择党员</option>
+                                    {% for row in member_list %}
+                                        <option value="{{ row.member_id }}">{{ row.member_name }}</option>
+                                    {% endfor %}
+                                </select>
+                            </td>
+                            <td>纪检委员</td>
+                            <td>
+                                <select name="party_discipline" style="width: 100%" class="form-control">
+                                    <option value="0">请选择党员</option>
+                                    {% for row in member_list %}
+                                        <option value="{{ row.member_id }}">{{ row.member_name }}</option>
+                                    {% endfor %}
+                                </select>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td colspan="4">
+                                <small class="formCenter">提示：不同的职务由不同的党员担任，重复会导致修改失败</small>
+                                <br></td>
+                        </tr>
+                    </table>
+
+                    <div class="btn_center ">
+                        <input type="submit" class="btn btn-info" value="提交">
+
+                    </div>
+
+                    <div class="textCenter ">
+                        {% if msg.flag == 'ok' %}
+                            <span style="color: red">修改成功</span>
+                        {% else %}
+                            <span style="color: red">{{ msg.tips }}</span>
+                            <span style="color: red">{{ msg.name_error }}</span>
+                            <span style="color: red">{{ msg.duty_error }}</span>
+                        {% endif %}
+
+                    </div>
+                </form>
+            </div>
+
+        </div>
+
+        <!-- Start content -->
+
+
+        <!-- End content -->
+
+    </div>
+    <!-- End content-page -->
+
+{% endblock %}

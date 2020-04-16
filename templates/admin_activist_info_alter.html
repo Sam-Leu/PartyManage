@@ -1,0 +1,139 @@
+{% extends 'admin_layout.html' %}
+
+
+{% block css %}
+
+    <style type="text/css">
+        .formCenter {
+            width: 50%;
+            margin: 0 auto;
+            margin-top: 30px;
+            text-align: center;
+        }
+
+        .textCenter {
+            margin: 0 auto;
+            margin-bottom: 10px;
+            text-align: center;
+        }
+        .table-space {
+            border-collapse: separate;
+            border-spacing: 5px 15px; /* 水平间距 垂直间距 */
+
+        }
+        select {
+            width: 100%;
+        }
+
+    </style>
+
+
+{% endblock %}
+
+
+
+{% block content %}
+    <!-- Start content-page -->
+    <div class="content-page">
+
+        <!-- Start content-bar -->
+        <div class="content">
+
+            <div class="container-fluid">
+
+                <div class="row">
+                    <div class="col-xl-12">
+                        <div class="breadcrumb-holder">
+                            <h1 class="main-title float-left">积极分子信息修改</h1>
+                            <ol class="breadcrumb float-right">
+                                <li class="breadcrumb-item"></li>
+                                <li class="breadcrumb-item active"></li>
+                            </ol>
+                            <div class="clearfix"></div>
+                        </div>
+                    </div>
+                </div>
+                <!-- end row -->
+            </div>
+
+
+        </div>
+        <!-- END content-bar -->
+
+        <div class="card mb-3 formCenter">
+            <div class="card-header">
+                <h3><i class="fa fa-user"></i> 积极分子个人信息</h3>
+            </div>
+
+            <div class="card-body ">
+
+                {#                <h3 class="text-center">可修改信息</h3>#}
+                <form method="post" action="/admin_activist_info_alter/?nid={{ data_list.activist_id }}">
+                    {% csrf_token %}
+                    <table class="table-space" style="margin-right: 10px">
+                        <tr>
+                            <td>用户名</td>
+                            <td><input type="text" class="form-control" disabled="disabled"
+                                       value="{{ data_list.user_account.username }}"></td>
+                            <td>账号类型</td>
+                            <td><input type="text" class="form-control" disabled="disabled"
+                                       value="{{ data_list.user_account.roles.usertype }}"></td>
+                        </tr>
+                        <tr>
+                            <td>真实姓名</td>
+                            <td>{{ activistinfoForm.activist_name }}</td>
+                            <td>性别</td>
+                            <td>{{ activistinfoForm.activist_gender }}</td>
+                        </tr>
+
+                        <tr>
+                            <td>手机</td>
+                            <td>{{ activistinfoForm.activist_phone }}</td>
+                            <td>Email</td>
+                            <td>{{ activistinfoForm.activist_email }}</td>
+                        </tr>
+
+                        <tr>
+                            <td>申请入党日期</td>
+                            <td>{{ activistinfoForm.apply_date }}</td>
+                            <td>志愿时长</td>
+                            <td>{{ activistinfoForm.voluntary_time }}</td>
+                        </tr>
+
+                    </table>
+                    <div class="formCenter">
+                        <input style="margin-bottom: 20px" type="submit" class="btn btn-info" value="提交">
+                    </div>
+                    <div class="textCenter">
+
+                        <span style="color: red">{{ msg }}</span>
+                        <span style="color: red">{{ activistinfoForm.activist_name.errors.0 }}</span>
+                        <span style="color: red">{{ activistinfoForm.activist_phone.errors.0 }}</span>
+                        <span style="color: red">{{ activistinfoForm.activist_email.errors.0 }}</span>
+                        <span style="color: red">{{ activistinfoForm.apply_date.errors.0 }}</span>
+                        <span style="color: red">{{ activistinfoForm.voluntary_time.errors.0 }}</span>
+                    </div>
+
+                </form>
+            </div>
+
+        </div>
+
+    </div>
+    <!-- END content-page -->
+
+{% endblock %}
+
+{% block js %}
+
+    <script>
+        $('#id_activist_gender').attr('style', "width: 100%");
+        $('#id_activist_gender').attr('class', "form-control");
+
+        $('#id_activist_status').attr('style', "width: 100%");
+        $('#id_activist_status').attr('class', "form-control");
+
+
+    </script>
+
+{% endblock %}

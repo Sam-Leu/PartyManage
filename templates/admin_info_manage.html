@@ -1,0 +1,95 @@
+{% extends 'admin_layout.html' %}
+
+{% block css %}
+
+    <style type="text/css">
+
+        img {
+            height: 20rem;
+            border-radius: 3px;
+        }
+
+    </style>
+
+
+{% endblock %}
+
+
+{% block content %}
+
+    <!-- Start content-page -->
+    <div class="content-page">
+
+        <!-- Start content-bar -->
+        <div class="content">
+
+            <div class="container-fluid">
+
+                <div class="row">
+                    <div class="col-xl-12">
+                        <div class="breadcrumb-holder">
+                            <h1 class="main-title float-left">基本信息管理</h1>
+                            <ol class="breadcrumb float-right">
+                                <li class="breadcrumb-item"></li>
+                                <li class="breadcrumb-item active"></li>
+                            </ol>
+                            <div class="clearfix"></div>
+                        </div>
+                    </div>
+                </div>
+                <!-- end row -->
+            </div>
+
+            <div class="row">
+
+                <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6 col-xl-6">
+                    <div class="card mb-3">
+
+
+                        <div class="card-body">
+                            <div class="card">
+                                <img class="card-img-top" src="/static/img/img07.jpeg" alt="Card image cap">
+                                <div class="card-body">
+                                    <h4 class="card-title">组织信息管理</h4>
+                                    <p class="card-text">可以对组织信息进行查看修改等</p>
+                                    <a href="/admin_party_info_manage/" class="btn btn-primary">点击进入</a>
+                                </div>
+                            </div>
+
+
+                        </div>
+                    </div><!-- end card-->
+                </div>
+
+                <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6 col-xl-6">
+                    <div class="card mb-3">
+
+
+                        <div class="card-body">
+                            <div class="card">
+                                <img class="card-img-top" src="/static/img/img08.jpg" alt="Card image cap">
+                                <div class="card-body">
+                                    <h4 class="card-title">党员信息管理</h4>
+                                    <p class="card-text">可以对党员信息进行查看、修改和查看已转出党员等</p>
+                                    <a href="/admin_member_info_manage/" class="btn btn-primary">点击进入</a>
+                                </div>
+                            </div>
+
+
+                        </div>
+                    </div><!-- end card-->
+                </div>
+
+            </div>
+
+
+        </div>
+        <!-- END content-bar -->
+
+        <!-- Start content -->
+        <!-- End content -->
+
+    </div>
+    <!-- End content-page -->
+
+{% endblock %}

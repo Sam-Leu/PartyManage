@@ -1,0 +1,96 @@
+{% extends 'admin_layout.html' %}
+
+
+
+{% block css %}
+
+    <style type="text/css">
+        .formCenter {
+            width: 50%;
+            margin: 0 auto;
+            margin-top: 50px;
+        }
+
+    </style>
+
+
+{% endblock %}
+
+
+{% block content %}
+    <!-- Start content-page -->
+    <div class="content-page">
+
+        <!-- Start content-bar -->
+        <div class="content">
+
+            <div class="container-fluid">
+
+                <div class="row">
+                    <div class="col-xl-12">
+                        <div class="breadcrumb-holder">
+                            <h1 class="main-title float-left">修改密码</h1>
+                            <ol class="breadcrumb float-right">
+                                <li class="breadcrumb-item"></li>
+                                <li class="breadcrumb-item active"></li>
+                            </ol>
+                            <div class="clearfix"></div>
+                        </div>
+                    </div>
+                </div>
+                <!-- end row -->
+            </div>
+
+
+        </div>
+        <!-- END content-bar -->
+
+        <div class="container " id="cont">
+
+
+            <div style="padding-top: 50px">
+
+                <form method="post" action="/admin_pwd_alter/">
+                    {% csrf_token %}
+
+                    <div class="formCenter">
+                        <div class="lowin-group">
+                            <label>原密码 </label>
+                            {{ pwdForm.old_password }}
+                            <span class="space"
+                                  style="color: red;">{{ '&nbsp;&nbsp;&nbsp;' }}{{ pwdForm.old_password.errors.0 }}</span>
+                        </div>
+
+                        <div class="lowin-group">
+                            <label>新密码 </label>
+                            {{ pwdForm.new_password }}
+                            <span class="space"
+                                  style="color: red;">{{ '&nbsp;&nbsp;&nbsp;' }}{{ pwdForm.new_password.errors.0 }}</span>
+                        </div>
+
+                        <div class="lowin-group">
+                            <label>确认密码 </label>
+                            {{ pwdForm.repeat_password }}
+                            <span class="space"
+                                  style="color: red;">{{ '&nbsp;&nbsp;&nbsp;' }}{{ pwdForm.repeat_password.errors.0 }}</span>
+                        </div>
+
+                        <div style="padding-bottom: 5px;">
+                            <span style="color: red;">{{ '&nbsp;&nbsp;&nbsp;' }} {{ msg }}</span>
+                        </div>
+
+
+                        <input type="submit" class="btn btn-info" value="提交"/>
+
+                    </div>
+
+                </form>
+            </div>
+
+        </div>
+
+
+    </div>
+    <!-- END content-page -->
+
+{% endblock %}

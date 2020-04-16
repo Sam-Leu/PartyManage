@@ -1,0 +1,112 @@
+{% extends 'admin_layout.html' %}
+
+{% block css %}
+
+    <style type="text/css">
+
+        .table-space td {
+            width: 100px;
+            display: table-cell;
+            text-align: center;
+            vertical-align: middle;
+            horiz-align: center;
+        }
+    </style>
+
+
+{% endblock %}
+
+
+{% block content %}
+
+    <!-- Start content-page -->
+    <div class="content-page">
+
+        <!-- Start content-bar -->
+        <div class="content">
+
+            <div class="container-fluid">
+
+                <div class="row">
+                    <div class="col-xl-12">
+                        <div class="breadcrumb-holder">
+                            <h1 class="main-title float-left">党日活动管理</h1>
+                            <ol class="breadcrumb float-right">
+                                <li class="breadcrumb-item"></li>
+                                <li class="breadcrumb-item active"></li>
+                            </ol>
+                            <div class="clearfix"></div>
+                        </div>
+                    </div>
+                </div>
+                <!-- end row -->
+            </div>
+
+
+        </div>
+        <!-- END content-bar -->
+
+        <!-- Start content -->
+        <div style="padding-left: 20px;padding-bottom: 20px">
+            <a class="btn btn-info btn-sm" href="/admin_add_activity/">新增党日活动</a>
+
+        </div>
+        <!-- 数据展示 -->
+        <div>
+            <table class="table table-hover">
+                <thead>
+                <tr>
+                    <th>编号</th>
+                    <th>活动主题</th>
+                    <th>活动时间</th>
+                    <th>活动地点</th>
+                    <th>活动状态</th>
+                    <th>报名人数</th>
+                    <th>活动详情</th>
+                    <th>操作</th>
+                </tr>
+                </thead>
+                <tbody>
+
+                {% for row in data %}
+
+                    <tr>
+                        <th scope="row">{{ row.id }}</th>
+                        <td>{{ row.title }}</td>
+                        <td>{{ row.time|date:'Y-m-d' }}</td>
+                        <td>{{ row.place }}</td>
+                        <td>{{ row.status }}</td>
+                        <td>{{ row.count }}</td>
+                        <td>
+                            <a type="button" href="/admin_activity_info/?nid={{ row.id }}" class="btn btn-info btn-sm">查看</a>
+                        </td>
+
+                        <td>
+                            <a type="button" href="/admin_edit_activity/?nid={{ row.id }}" class="btn btn-info btn-sm">编辑</a>
+                        </td>
+                    </tr>
+
+                {% endfor %}
+
+                </tbody>
+            </table>
+
+
+            <nav aria-label="Page navigation">
+                <ul class="pagination">
+                    {{ page_info.pager | safe }}
+
+                </ul>
+            </nav>
+        </div>
+        <!-- End content -->
+
+    </div>
+    <!-- End content-page -->
+
+{% endblock %}
+
+
+{% block js %}
+
+{% endblock %}

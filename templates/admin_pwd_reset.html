@@ -1,0 +1,301 @@
+{% extends 'admin_layout.html' %}
+
+{% block css %}
+
+    <style type="text/css">
+        .formCenter {
+            width: 50%;
+            margin: 0 auto;
+            margin-top: 80px;
+            text-align: center;
+        }
+
+        .table-space {
+            border-collapse: separate;
+            border-spacing: 5px 15px; /* 水平间距 垂直间距 */
+
+        }
+
+        td {
+            width: 150px;
+            display: table-cell;
+            text-align: center;
+            vertical-align: middle;
+        }
+
+        .btn_center {
+            margin: 0 auto;
+        }
+
+        .shadow {
+            position: fixed;
+            top: 0;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background-color: black;
+            opacity: 0.5;
+            z-index: 999;
+        }
+
+        .mod {
+            position: fixed;
+            top: 10%;
+            left: 37%;
+            width: 650px;
+            height: 350px;
+            z-index: 1000;
+            padding: 10px;
+            border-radius: 10px;
+            background-color: #EBEBEB;
+
+        }
+
+        .hide {
+            display: none;
+        }
+
+        .loading {
+            position: fixed;
+            width: 32px;
+            height: 32px;
+            left: 50%;
+            top: 50%;
+            margin-left: -16px;
+            margin-top: -16px;
+            background-image: url("/static/img/loading.gif");
+        }
+
+
+    </style>
+
+
+{% endblock %}
+
+{% block content %}
+
+    <!-- Start content-page -->
+    <div class="content-page">
+
+        <!-- Start content-bar -->
+        <div class="content">
+
+            <div class="container-fluid">
+
+                <div class="row">
+                    <div class="col-xl-12">
+                        <div class="breadcrumb-holder">
+                            <h1 class="main-title float-left">重置密码</h1>
+                            <ol class="breadcrumb float-right">
+                                <li class="breadcrumb-item"></li>
+                                <li class="breadcrumb-item active"></li>
+                            </ol>
+                            <div class="clearfix"></div>
+                        </div>
+                    </div>
+                </div>
+                <!-- end row -->
+            </div>
+
+            <div class="form-control">
+                提示：重置用户名密码后，密码将设置为用户名，如非必要请勿操作。
+            </div>
+            <div class="card mb-3 formCenter">
+                <div class="card-header">
+                    <h3><i class="fa fa-search bigfonts" aria-hidden="true"></i> 查询用户</h3>
+                </div>
+
+                <div class="card-body ">
+                    <form class="form-inline" method="POST" action="/admin_member_add/">
+                        {% csrf_token %}
+                        <table class="table-space" style="margin-right: 1px">
+                            <tbody>
+                            <tr>
+                                <td><label>用户名</label></td>
+                                <td>
+                                    <input type="text" id="id_username" class="form-control" placeholder="请输入完整的用户名">
+                                </td>
+
+
+                            </tr>
+                            <tr>
+                                <td><label>用户类型</label></td>
+                                <td>
+                                    <select id="id_usertype" class="form-control" style="width: 100%">
+                                        <option>党员用户</option>
+                                        <option>积极分子</option>
+                                    </select>
+                                </td>
+                            </tr>
+
+
+                            </tbody>
+                        </table>
+                        <div class="btn_center ">
+                            <a class="btn btn-info" onclick="resetPwd()">查询</a>
+
+                        </div>
+
+                    </form>
+
+                </div>
+
+            </div>
+
+            <div class="shadow hide" id="shadow"></div>
+            <div class="loading hide" id="loading"></div>
+
+            <div>
+
+                <div class=" mod hide card mb-3 formCenter" id="idReset">
+                    <div class="card-header">
+                        <h3><i class="fa fa-user"></i> 个人信息</h3>
+                    </div>
+
+                    <div class="card-body ">
+
+                        <input type="text" id="resetId" style="display: none">
+
+
+                        <table class="table-space" style="margin-right: 30px">
+
+                            <tr>
+                                <td>用户名</td>
+                                <td>
+                                    <input type="text" id="idUsername" class="form-control" disabled="disabled">
+                                </td>
+                                <td>真实姓名</td>
+                                <td>
+                                    <input type="text" id="idName" class="form-control" disabled="disabled">
+                                </td>
+                            </tr>
+
+                            <tr>
+
+                                <td>性别</td>
+                                <td>
+                                    <input type="text" id="idGender" class="form-control" disabled="disabled">
+                                </td>
+                                <td>账号类型</td>
+                                <td><input type="text" id="idUsertype" class="form-control" disabled="disabled">
+                                </td>
+                            </tr>
+
+                            <tr>
+                                <td>Email</td>
+                                <td>
+                                    <input type="text" id="idEmail" class="form-control" disabled="disabled">
+                                </td>
+                                <td>手机</td>
+                                <td>
+                                    <input type="text" id="idPhone" class="form-control" disabled="disabled">
+                                </td>
+                            </tr>
+
+                            <tr>
+
+                                <td colspan="2">
+                                    <a class="btn btn-warning btn-sm" id="btnReset" style="margin-top: 20px"
+                                       onclick="btnReset()">重置密码</a>
+                                </td>
+                                <td colspan="2">
+                                    <a class="btn btn-success btn-sm" id="btnCancel" style="margin-top: 20px"
+                                       onclick="btnCancel()">取消重置</a>
+
+                                </td>
+                            </tr>
+                        </table>
+
+                    </div>
+
+                </div>
+            </div>
+
+
+        </div>
+        <!-- END content-bar -->
+
+        <!-- Start content -->
+
+        <!-- End content -->
+
+    </div>
+    <!-- End content-page -->
+
+{% endblock %}
+
+{% block js %}
+
+    <script>
+        function resetPwd() {
+
+            $.ajax({
+                url: '/admin_get_one_info/',
+                method: 'GET',
+                dataType: 'JSON',
+                data: {
+                    'name': $('#id_username').val(),
+                    'usertype': $('#id_usertype').val(),
+                    csrfmiddlewaretoken: '{{ csrf_token }}'
+                },
+                success: function (args) {
+
+                    if (args[0].flag != null) {
+                        $('#shadow, #loading').removeClass('hide')
+                        setTimeout(function () {
+                            $('#resetId').attr('value', args[0].id);
+                            $('#idUsername').attr('value', args[0].username);
+                            $('#idName').attr('value', args[0].name);
+                            $('#idGender').attr('value', args[0].gender);
+                            $('#idUsertype').attr('value', args[0].type);
+                            $('#idEmail').attr('value', args[0].email);
+                            $('#idPhone').attr('value', args[0].phone);
+                            $('#loading').addClass('hide');
+                            $('#idReset').removeClass('hide');
+                        }, 1000)
+
+                    } else {
+                        swal('该用户类型下没有此用户存在！');
+                    }
+
+                }
+
+            })
+        }
+
+        function btnReset() {
+
+            $.ajax({
+                url: '/admin_pwd_reset_submit/',
+                type: 'POST',
+                data: {
+                    'id': $('#resetId').val(),
+                    'username': $('#idUsername').val(),
+                    csrfmiddlewaretoken: '{{ csrf_token }}'
+                },
+                //如果添加的数据的值有列表，则需要添加此属性
+                //不支持字典，字典可序列化为字符串发送
+                traditional: true,
+                //dataType可以把字符串解释为json数据
+                dataType: 'JSON',
+                success: function (args) {
+                    if (args.status) {
+                        swal("提交成功！");
+                        setTimeout(function () {
+                            location.reload();
+                        }, 1000);
+
+                    } else {
+                        swal(args.msg);
+                    }
+                }
+            })
+        }
+
+        function btnCancel() {
+            location.reload();
+        }
+
+    </script>
+
+{% endblock %}

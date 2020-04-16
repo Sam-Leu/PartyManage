@@ -1,0 +1,210 @@
+{% extends 'member_layout.html' %}
+
+{% block css %}
+
+    {{ content_form.media }}
+
+    <style type="text/css">
+        ::-webkit-scrollbar {
+            display: none
+        }
+
+        .formCenter {
+            width: 100%;
+            height: 480px;
+            margin: 0 auto;
+            margin-top: 5px;
+            overflow: scroll;
+        }
+
+        .info {
+            background-color: #EBEBEB;
+            width: 100%;
+            height: 36px;
+            line-height: 36px;
+            border-radius: 3px;
+            text-align: center;
+            overflow: scroll;
+        }
+
+        .btn_center {
+            margin: 0 auto;
+            margin-top: 10px;
+            text-align: center;
+        }
+
+        #id_content {
+            padding-top: 12px;
+        }
+
+        #id_title {
+            margin: 0 10px 0 10px;
+        }
+
+        #id_time {
+            margin: 0 10px 0 10px;
+        }
+
+        #id_place {
+            margin: 0 10px 0 10px;
+        }
+
+        td {
+            width: 120px;
+            text-align: center;
+            vertical-align: middle;
+            horiz-align: center;
+        }
+
+        select {
+            width: 100%;
+        }
+
+
+    </style>
+
+
+{% endblock %}
+
+{% block content %}
+
+    <!-- Start content-page -->
+    <div class="content-page">
+
+        <!-- Start content-bar -->
+        <div class="content">
+
+            <div class="container-fluid">
+
+                <div class="row">
+                    <div class="col-xl-12">
+                        <div class="breadcrumb-holder">
+                            <h1 class="main-title float-left">党日活动详情</h1>
+                            <ol class="breadcrumb float-right">
+                                <li class="breadcrumb-item"></li>
+                                <li class="breadcrumb-item active"></li>
+                            </ol>
+                            <div class="clearfix"></div>
+                        </div>
+                    </div>
+                </div>
+                <!-- end row -->
+            </div>
+            <div class="form-control">
+
+                <table>
+                    <tbody>
+                    <tr>
+                        <td>活动主题:</td>
+                        <td>
+                            <div class="info">{{ data.title }}</div>
+                        </td>
+                        <td>活动时间:</td>
+                        <td>
+                            <div class="info">{{ data.time|date:'Y-m-d' }}</div>
+                        </td>
+                        <td>活动地点:</td>
+                        <td>
+                            <div class="info">{{ data.place }}</div>
+                        </td>
+                        <td>活动状态:</td>
+                        <td>
+                            <div class="info">{{ data.status }}</div>
+                        </td>
+                        <td>报名人数:</td>
+                        <td>
+                            <div class="info">{{ infos.count }}</div>
+                        </td>
+                        <td>报名名单:</td>
+                        <td>
+                            <select class="form-control">
+                                {% for item in data_apply %}
+                                    <option>{{ item.member__member_name }}</option>
+                                {% endfor %}
+
+                            </select>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+
+
+            </div>
+            <div class="form-control">
+
+                <div class="card-header" style="text-align: center;">
+                    <h3>活动内容</h3>
+                </div>
+
+                <div class="card-body formCenter">
+                {{ data.content|safe }}
+                </div>
+
+            </div>
+            <div class="btn_center">
+            {% if data.status == '报名中' %}
+                {% if infos.apply_status == '未报名' %}
+                    <button type="button" class="btn btn-primary " onclick="confirmApply('{{ data.id }}','{{ data_member.member_id }}')">报名</button>
+                {% elif infos.apply_status == '已报名' %}
+                    <button type="button" class="btn btn-warning " onclick="cancelApply('{{ data.id }}','{{ data_member.member_id }}')">取消报名</button>
+                {% endif %}
+            {% else %}
+                <button type="button" class="btn btn-secondary ">当前不可报名或取消报名</button>
+            {% endif %}
+
+
+            </div>
+
+        </div>
+        <!-- END content-bar -->
+
+        <!-- Start content -->
+
+        <!-- End content -->
+
+    </div>
+    <!-- End content-page -->
+
+{% endblock %}
+
+{% block js %}
+<script>
+    function confirmApply($aid,$mid) {
+        swal({
+                title: "亲，您确定报名参加此活动吗？",
+                icon: "warning",
+                buttons: true,
+                dangerMode: true,
+            })
+                .then((willDelete) => {
+                    if (willDelete) {
+                        swal("报名成功!", {
+                            icon: "success",
+                        });
+                        window.location.href = "/member_activity_confirm_apply/?aid=" + $aid + "&mid=" +$mid;
+                    } else {
+                    }
+                });
+    }
+
+    function cancelApply($aid,$mid) {
+        swal({
+                title: "亲，您确定取消报名参加此活动吗？",
+                icon: "warning",
+                buttons: true,
+                dangerMode: true,
+            })
+                .then((willDelete) => {
+                    if (willDelete) {
+                        swal("取消报名成功!", {
+                            icon: "success",
+                        });
+                        window.location.href = "/member_activity_cancel_apply/?aid=" + $aid + "&mid=" +$mid;
+                    } else {
+                    }
+                });
+    }
+
+</script>
+
+{% endblock %}

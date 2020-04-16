@@ -1,0 +1,194 @@
+{% extends 'member_layout.html' %}
+
+{% block css %}
+
+    <style type="text/css">
+
+        .formCenter {
+            width: 50%;
+            margin: 0 auto;
+            margin-top: 50px;
+            text-align: center;
+        }
+
+        .table-center {
+            width: 100%;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        .table-space {
+            border-collapse: separate;
+            border-spacing: 5px 15px; /* 水平间距 垂直间距 */
+
+        }
+
+        td {
+            display: table-cell;
+            text-align: center;
+            vertical-align: middle;
+        }
+
+
+    </style>
+
+{% endblock %}
+
+
+
+{% block content %}
+    <!-- Start content-page -->
+    <div class="content-page">
+
+        <!-- Start content-bar -->
+        <div class="content">
+
+            <div class="container-fluid">
+
+                <div class="row">
+                    <div class="col-xl-12">
+                        <div class="breadcrumb-holder">
+                            <h1 class="main-title float-left">我的奖惩</h1>
+                            <ol class="breadcrumb float-right">
+                                <li class="breadcrumb-item"></li>
+                                <li class="breadcrumb-item active"></li>
+                            </ol>
+                            <div class="clearfix"></div>
+                        </div>
+                    </div>
+                </div>
+                <!-- end row -->
+            </div>
+
+
+        </div>
+        <!-- END content-bar -->
+
+        <div class="card mb-3 formCenter">
+            <div class="card-header">
+                <h3><i class="fa fa-exchange bigfonts"></i> 关系转移</h3>
+            </div>
+
+            <div class="card-body ">
+
+                <table class="table-space table-center">
+
+                    <tr>
+                        <td>当前是否完成转出:</td>
+                        <td>
+                            <input type="text" class="form-control" name="is_out_team" disabled="disabled"
+                                   value="{{ data.is_out_team }}">
+                        </td>
+
+                    </tr>
+
+                    <tr>
+                        <td>申请转出组织:</td>
+                        <td>
+                            {% if data.is_out_team != '否' %}
+                                <input type="text" class="form-control" name="leave_to_party"
+                                       value="{{ data.leave_to_party }}" disabled="disabled">
+                            {% else %}
+                                <input type="text" class="form-control" id="id_party" name="leave_to_party"
+                                       placeholder="请输入转出组织">
+                            {% endif %}
+                        </td>
+
+                    </tr>
+
+                    <tr>
+                        <td>转出确认时间:</td>
+                        <td>
+                            {% if data.is_out_team == '转出待确认' %}
+                                <input type="text" class="form-control" value="申请转出待确认" disabled="disabled">
+                            {% elif data.is_out_team == '否' %}
+                                <input type="text" class="form-control" value="暂未申请转出" disabled="disabled">
+                            {% else %}
+                                <input type="text" class="form-control" value="{{ data.out_confirm_date }}"
+                                       disabled="disabled">
+                            {% endif %}
+
+                        </td>
+
+                    </tr>
+                    <tr>
+                        <td colspan="2">
+                            <small>提示：申请转出成功15天后账号将会被冻结而无法登陆！</small>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td colspan="2">
+                            {% if data.is_out_team == '否' %}
+                                <button class="btn btn-info" onclick="applyTransfer('{{ data.member_id }}')">申请转出
+                                </button>
+                            {% elif data.is_out_team == '转出待确认' %}
+                                <button class="btn btn-warning" onclick="cancelTransfer('{{ data.member_id }}')">撤回申请
+                                </button>
+                            {% else %}
+                                <button class="btn btn-secondary">已转出</button>
+                            {% endif %}
+
+                        </td>
+                    </tr>
+
+                </table>
+
+
+            </div>
+        </div>
+
+    </div>
+    <!-- END content-page -->
+
+{% endblock %}
+
+{% block js %}
+
+    <script>
+        function cancelTransfer($mid) {
+
+            swal({
+                title: "亲，您确定撤回转出申请吗？",
+                icon: "warning",
+                buttons: true,
+                dangerMode: true,
+            })
+                .then((willDelete) => {
+                    if (willDelete) {
+                        swal("撤回转出申请成功!", {
+                            icon: "success",
+                        });
+                        window.location.href = "/member_transfer_cancel/?mid=" + $mid;
+                    } else {
+                    }
+                });
+
+        }
+
+        function applyTransfer($mid) {
+            var party = $('#id_party').val()
+            if (party == '') {
+                swal('转出组织不能为空！')
+            } else {
+                swal({
+                    title: "亲，您确定申请转出吗？",
+                    icon: "warning",
+                    buttons: true,
+                    dangerMode: true,
+                })
+                    .then((willDelete) => {
+                        if (willDelete) {
+                            swal("申请转出成功，请等待管理员确认!", {
+                                icon: "success",
+                            });
+                            window.location.href = "/member_transfer_submit/?mid=" + $mid + "&party=" + party;
+                        } else {
+                        }
+                    });
+            }
+        }
+
+    </script>
+
+{% endblock %}

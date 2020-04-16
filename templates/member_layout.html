@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>党务系统</title>
+    <meta name="description" content="Free Bootstrap 4 Admin Theme | Pike Admin">
+
+
+    <!-- Favicon -->
+    <link rel="shortcut icon" href="/static/assets/images/favicon.ico">
+
+    <!-- Bootstrap CSS -->
+    <link href="/static/assets/css/bootstrap.min.css" rel="stylesheet" type="text/css"/>
+
+    <!-- My CSS -->
+    <link href="/static/assets/css/mycss.css" rel="stylesheet" type="text/css"/>
+
+    <!-- Font Awesome CSS -->
+    <link href="/static/assets/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css"/>
+
+    <!-- Custom CSS -->
+    <link href="/static/assets/css/style.css" rel="stylesheet" type="text/css"/>
+
+    <!-- BEGIN CSS for this page -->
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.16/css/dataTables.bootstrap4.min.css"/>
+    <!-- END CSS for this page -->
+
+    {% block css %} {% endblock %}
+
+</head>
+
+<body class="adminbody">
+
+<div id="main">
+
+    <!-- top bar navigation -->
+    <div class="headerbar">
+
+        <!-- LOGO -->
+        <div class="headerbar-left">
+            <a class="logo"><img alt="Logo" src="/static/assets/images/logo.png"/> <span>欢迎使用党务系统</span></a>
+        </div>
+
+        <nav class="navbar-custom">
+
+            <ul class="list-inline float-right mb-0">
+
+                {#                        个人信息#}
+                <li class="list-inline-item dropdown notif">
+                    <a class="nav-link dropdown-toggle nav-user" data-toggle="dropdown" href="#" role="button"
+                       aria-haspopup="false" aria-expanded="false">
+                        <img src="/static/assets/images/avatars/admin.png" alt="Profile image" class="avatar-rounded">
+                    </a>
+                    <div class="dropdown-menu dropdown-menu-right profile-dropdown ">
+                        <!-- item-->
+                        <div class="dropdown-item noti-title">
+                            <h5 class="text-overflow">
+                                <small>{{ user }} ,你好！</small>
+                            </h5>
+                        </div>
+
+                        <!-- item-->
+                        <a href="/logout/" class="dropdown-item notify-item">
+                            <i class="fa fa-power-off"></i> <span>退出</span>
+                        </a>
+
+
+                    </div>
+                </li>
+
+            </ul>
+
+            <ul class="list-inline menu-left mb-0">
+                <li class="float-left">
+                    <button class="button-menu-mobile open-left">
+                        <i class="fa fa-fw fa-bars"></i>
+                    </button>
+                </li>
+            </ul>
+        </nav>
+
+    </div>
+    <!-- End Navigation -->
+
+
+    <!-- Left Sidebar -->
+    <div class="left main-sidebar">
+
+        <div class="sidebar-inner leftscroll">
+
+            <div id="sidebar-menu">
+
+                <ul>
+                    <li class="submenu">
+                        <a class="active" href="/member_index/"><i class="fa fa-fw fa-bars"></i><span> 首页 </span> </a>
+                    </li>
+
+                    <li class="submenu">
+                        <a href="/member_profile/"><i class="fa fa-list-alt bigfonts"></i> <span> 个人信息 </span></a>
+
+                    </li>
+
+                    <li class="submenu">
+                         <a href="/member_my_meeting/"><i class="fa fa-indent bigfonts"></i><span> 我的会议 </span> </a>
+
+                    </li>
+
+                    <li class="submenu">
+                        <a href="/member_my_lecture/"><i class="fa fa-fw fa-file-text-o"></i> <span> 我的党课 </span></a>
+
+                    </li>
+
+                    <li class="submenu">
+                        <a href="/member_activity_list/"><i class="fa fa-fw fa-th"></i> <span> 党日活动 </span></a>
+
+
+                    </li>
+
+                    <li class="submenu">
+                        <a href="/member_my_reward_punish/"><i class="fa fa-star-half-full bigfonts"></i> <span> 我的奖惩 </span>
+                        </a>
+
+                    </li>
+
+                    <li class="submenu">
+                        <a href="/member_transfer/"><i class="fa fa-exchange bigfonts"></i> <span> 关系转移 </span> </a>
+
+                    </li>
+
+
+                </ul>
+
+                <div class="clearfix"></div>
+
+            </div>
+
+            <div class="clearfix"></div>
+
+        </div>
+
+    </div>
+    <!-- End Sidebar -->
+    {% block content %} {% endblock %}
+
+
+</div>
+<!-- END main -->
+
+<script src="/static/assets/js/modernizr.min.js"></script>
+<script src="/static/assets/js/jquery.min.js"></script>
+<script src="/static/assets/js/moment.min.js"></script>
+
+<script src="/static/assets/js/popper.min.js"></script>
+<script src="/static/assets/js/bootstrap.min.js"></script>
+
+<script src="/static/assets/js/detect.js"></script>
+<script src="/static/assets/js/fastclick.js"></script>
+<script src="/static/assets/js/jquery.blockUI.js"></script>
+<script src="/static/assets/js/jquery.nicescroll.js"></script>
+
+<!-- App js -->
+<script src="/static/assets/js/pikeadmin.js"></script>
+
+<!-- BEGIN Java Script for this page -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.4.0/Chart.min.js"></script>
+<script src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/1.10.16/js/dataTables.bootstrap4.min.js"></script>
+
+<!-- Counter-Up-->
+<script src="/static/assets/plugins/waypoints/lib/jquery.waypoints.min.js"></script>
+<script src="/static/assets/plugins/counterup/jquery.counterup.min.js"></script>
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+
+
+<script>
+    $(document).ready(function () {
+        // data-tables
+        $('#example1').DataTable();
+
+        // counter-up
+        $('.counter').counterUp({
+            delay: 10,
+            time: 600
+        });
+    });
+</script>
+
+<!-- END Java Script for this page -->
+
+{% block js %} {% endblock %}
+
+</body>
+</html>

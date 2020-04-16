@@ -1,0 +1,611 @@
+{% extends 'admin_layout.html' %}
+
+{% block css %}
+
+    <style type="text/css">
+
+        .table-space {
+            border-collapse: separate;
+            border-spacing: 10px 5px; /* 水平间距 垂直间距 */
+
+        }
+
+        .table-space td {
+            width: 100px;
+            display: table-cell;
+            text-align: center;
+            vertical-align: middle;
+            horiz-align: center;
+        }
+
+        .shadow {
+            position: fixed;
+            top: 0;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background-color: black;
+            opacity: 0.5;
+            z-index: 999;
+        }
+
+        .mod {
+            position: fixed;
+            top: 10%;
+            left: 30%;
+            width: 620px;
+            height: 650px;
+            z-index: 1000;
+            padding: 50px;
+            border-radius: 10px;
+            background-color: white;
+
+        }
+
+        .hide {
+            display: none;
+        }
+
+        .loading {
+            position: fixed;
+            width: 32px;
+            height: 32px;
+            left: 50%;
+            top: 50%;
+            margin-left: -16px;
+            margin-top: -16px;
+            background-image: url("/static/img/loading.gif");
+        }
+
+        .selectinfo {
+            width: 100%;
+            height: 100%;
+            border-radius: 5px;
+        }
+
+        .btn-control {
+            padding: 0px 5px;
+            margin: 2px;
+            width: 100%;
+        }
+    </style>
+
+
+{% endblock %}
+
+
+{% block content %}
+
+    <!-- Start content-page -->
+    <div class="content-page">
+
+        <!-- Start content-bar -->
+        <div class="content">
+
+            <div class="container-fluid">
+
+                <div class="row">
+                    <div class="col-xl-12">
+                        <div class="breadcrumb-holder">
+                            <h1 class="main-title float-left">会议记录</h1>
+                            <ol class="breadcrumb float-right">
+                                <li class="breadcrumb-item"></li>
+                                <li class="breadcrumb-item active"></li>
+                            </ol>
+                            <div class="clearfix"></div>
+                        </div>
+                    </div>
+                </div>
+                <!-- end row -->
+            </div>
+
+
+        </div>
+        <!-- END content-bar -->
+
+        <!-- Start content -->
+        <div style="padding-left: 20px;padding-bottom: 20px">
+            <a class="btn btn-info btn-sm" id="addMeeting">录入会议</a>
+
+        </div>
+        <!-- 数据展示 -->
+        <div>
+            <table class="table table-hover">
+                <thead>
+                <tr>
+                    <th>编号</th>
+                    <th>日期</th>
+                    <th>地点</th>
+                    <th>标题</th>
+                    <th>参会人数</th>
+                    <th>参会名单</th>
+                    <th>缺席人数</th>
+                    <th>缺席名单</th>
+                    <th>操作</th>
+                </tr>
+                </thead>
+                <tbody>
+
+                {% for row in data %}
+
+                    <tr>
+                        <th scope="row">{{ row.id }}</th>
+                        <td>{{ row.date|date:'Y-m-d' }}</td>
+                        <td>{{ row.place }}</td>
+                        <td>{{ row.title }}</td>
+                        <td>{{ row.attend_num }}</td>
+                        <td><select style="width: 80px">
+                            {% for item in row.attendance %}
+                                <option value={{ item }}>{{ item }}</option>
+                            {% endfor %}
+                        </select></td>
+                        <td>{{ row.absent_num }}</td>
+                        <td><select style="width: 80px">
+                            {% for item in row.absence %}
+                                <option value={{ item }}>{{ item }}</option>
+                            {% endfor %}
+                        </select></td>
+                        <td>
+                            <a type="button" onclick="alterMeeting('{{ row.id }}')" class="btn btn-info btn-sm">编辑</a>
+                            <a type="button" onclick="delMeeting('{{ row.id }}')" class="btn btn-warning btn-sm">删除</a>
+                        </td>
+                    </tr>
+
+                {% endfor %}
+
+                </tbody>
+            </table>
+
+
+            <nav aria-label="Page navigation">
+                <ul class="pagination">
+                    {{ page_info.pager | safe }}
+
+                </ul>
+            </nav>
+        </div>
+        <!-- End content -->
+
+        <div class="shadow hide" id="shadow"></div>
+        <div class="loading hide" id="loading"></div>
+
+        <!--对话框添加和修改会议信息-->
+        <div class="mod hide" id="btnAdd">
+            {% csrf_token %}
+
+            <h4 style="text-align: center">请输入会议信息</h4>
+            <input id="meetingId" name="id" type="text" style="display: none">
+            <input id="flagId" name="flag" type="text" style="display: none">
+
+            <table class="form-group table-space">
+                <tbody>
+
+                <tr style="width: auto;height: max-content">
+                    <td>
+                        <label>日期:</label>
+                    </td>
+                    <td colspan="3">
+                        <input class="form-control" style="width: 100%" id="dateId" name="date" type="date">
+
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>
+                        <label>地点:</label>
+                    </td>
+                    <td colspan="3">
+                        <input class="form-control" style="width: 100%" id="placeId" name="place" type="text">
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>
+                        <label>标题:</label>
+                    </td>
+                    <td colspan="3">
+                        <input class="form-control" style="width: 100%" id="titleId" name="title" type="text">
+                    </td>
+                </tr>
+
+                <tr>
+                    <td rowspan="2">
+                        <label>积极分子:</label>
+                    </td>
+                    <td rowspan="2">
+                        <label>全部名单</label>
+                        <select class="selectinfo" name="member" size="12" multiple="multiple" id="member">
+                        </select>
+                    </td>
+                    <td style="padding-top: 20px">
+                        <div>
+                            <input class="btn btn-info btn-sm btn-control" name="add_attend" id="add_attend"
+                                   type="button"
+                                   value="添加到参会"/><br>
+                            <input class="btn btn-info btn-sm btn-control" name="add_all_attend" id="add_all_attend"
+                                   type="button" value="全部添加到参会"/><br>
+                            <input class="btn btn-info btn-sm btn-control" name="remove_attend" id="remove_attend"
+                                   type="button" value="从参会移除"/><br>
+                            <input class="btn btn-info btn-sm btn-control" name="remove_all_attend"
+                                   id="remove_all_attend" type="button" value="全部参会移除"/><br>
+                        </div>
+                    </td>
+                    <td>
+                        <div>
+                            <label>出勤名单</label>
+                            <select class="selectinfo" name="attend" size="6" multiple="multiple" id="attend">
+                            </select>
+                        </div>
+                    </td>
+
+                </tr>
+
+                <tr>
+                    <td>
+                        <div>
+                            <input class="btn btn-warning btn-sm btn-control" name="add_absent" id="add_absent"
+                                   type="button" value="添加到缺席"/><br>
+                            <input class="btn btn-warning btn-sm btn-control" name="remove_absent" id="remove_absent"
+                                   type="button" value="从缺席移除"/><br>
+                            <input class="btn btn-warning btn-sm btn-control" name="remove_all_absent"
+                                   id="remove_all_absent" type="button" value="全部缺席移除"/><br>
+                        </div>
+                    </td>
+                    <td>
+                        <div>
+                            <label>缺勤名单</label>
+                            <select class="selectinfo" name="absent" size="6" multiple="multiple" id="absent">
+                            </select>
+                        </div>
+                    </td>
+                </tr>
+                </tbody>
+
+            </table>
+
+            <div style="text-align: center; padding-top: 20px">
+                <input class="btn btn-primary" type="button" id="addSubmit" value="提交"/>&nbsp;
+                <input class="btn btn-primary" type="button" id="addCancel" value="取消"/>
+                <span id="errormsg"></span>
+            </div>
+        </div>
+
+
+    </div>
+    <!-- End content-page -->
+
+{% endblock %}
+
+
+{% block js %}
+    <script src="/static/jquery-1.12.4.js"></script>
+
+
+    <script>
+        //党员选择操作js代码
+        //选中的从左端移到参会
+        document.getElementById("add_attend").onclick = function () {
+
+            //获取id=member的下拉选
+            var memberElement = document.getElementById("member");
+
+            //获取id=member的所有的子元素option
+            var optionElements = memberElement.getElementsByTagName("option");
+            var len = optionElements.length;
+
+            //获取id=attend的下拉选
+            var attendElement = document.getElementById("attend");
+
+            //移动
+            for (var i = 0; i < len; i++) {
+                /*
+                 * select元素中的 selectedIndex属性
+                 *    * 作用:表示当前option元素中北选中的索引值
+                 *    * -1:表示当前没有被选中的
+                 *    * 如果有多个被选中时,该属性获取第一个被选中的(索引值最小的)
+                 *    * javaScrip的数组是长度可变的
+                 */
+                if (memberElement.selectedIndex != -1) {
+                    attendElement.appendChild(optionElements[memberElement.selectedIndex])
+                }
+            }
+        }
+
+
+        //选中的从左端移到缺席
+        document.getElementById("add_absent").onclick = function () {
+
+            //获取id=member的下拉选
+            var memberElement = document.getElementById("member");
+
+            //获取id=member的所有的子元素option
+            var optionElements = memberElement.getElementsByTagName("option");
+            var len = optionElements.length;
+
+            //获取id=absent的下拉选
+            var absentElement = document.getElementById("absent");
+
+            //移动
+            for (var i = 0; i < len; i++) {
+
+                if (memberElement.selectedIndex != -1) {
+                    absentElement.appendChild(optionElements[memberElement.selectedIndex])
+                }
+            }
+        }
+
+
+        //全部的从左端移到参会
+        document.getElementById("add_all_attend").onclick = function () {
+            var memberElement = document.getElementById("member");
+            var optionElements = memberElement.getElementsByTagName("option");
+            var len = optionElements.length;
+
+            var attendElement = document.getElementById("attend");
+
+            for (var i = 0; i < len; i++) {
+                attendElement.appendChild(optionElements[0]);
+            }
+        }
+
+
+        //选中的从参会移到左端
+        document.getElementById("remove_attend").onclick = function () {
+
+            //获取id=attend的下拉选
+            var attendElement = document.getElementById("attend");
+
+            //获取id=attend的所有的子元素option
+            var optionElements = attendElement.getElementsByTagName("option");
+            var len = optionElements.length;
+
+            //获取id=member的下拉选
+            var memberElement = document.getElementById("member");
+
+            //移动
+            for (var i = 0; i < len; i++) {
+
+                if (attendElement.selectedIndex != -1) {
+                    memberElement.appendChild(optionElements[attendElement.selectedIndex])
+                }
+            }
+        }
+
+        //选中的从缺席移到左端
+        document.getElementById("remove_absent").onclick = function () {
+
+            //获取id=absent的下拉选
+            var absentElement = document.getElementById("absent");
+
+            //获取id=absent的所有的子元素option
+            var optionElements = absentElement.getElementsByTagName("option");
+            var len = optionElements.length;
+
+            //获取id=member的下拉选
+            var memberElement = document.getElementById("member");
+
+            //移动
+            for (var i = 0; i < len; i++) {
+
+                if (absentElement.selectedIndex != -1) {
+                    memberElement.appendChild(optionElements[absentElement.selectedIndex])
+                }
+            }
+        }
+
+
+        //全部的从参会移到左端
+        document.getElementById("remove_all_attend").onclick = function () {
+            var attendElement = document.getElementById("attend");
+            var optionElements = attendElement.getElementsByTagName("option");
+            var len = optionElements.length;
+
+            var memberElement = document.getElementById("member");
+
+            for (var i = 0; i < len; i++) {
+                memberElement.appendChild(optionElements[0]);
+            }
+        }
+
+        //全部的从缺席移到左端
+        document.getElementById("remove_all_absent").onclick = function () {
+            var absentElement = document.getElementById("absent");
+            var optionElements = absentElement.getElementsByTagName("option");
+            var len = optionElements.length;
+
+            var memberElement = document.getElementById("member");
+
+            for (var i = 0; i < len; i++) {
+                memberElement.appendChild(optionElements[0]);
+            }
+        }
+
+    </script>
+
+    <script>
+        $(function () {
+            addMeeting();
+            MeetingSubmit();
+            addCancel();
+
+        })
+
+        function addMeeting() {
+            $('#addMeeting').click(function () {
+                $('#shadow, #loading').removeClass('hide')
+                $('#flagId').attr('value', 'add');
+
+                $.ajax({
+                    url: '/activist_get_all_activist/',
+                    method: 'GET',
+                    dataType: 'JSON',
+                    success: function (args) {
+                        /*
+                        args = [
+                        {id:1,title:xx}
+                         */
+                        {#args = JSON.parse(args)#}
+                        $.each(args, function (i, row) {
+                            const tag = document.createElement('option');
+                            tag.innerHTML = row.activist_name;
+                            tag.setAttribute('value', row.activist_name);
+                            $('#member').append(tag);
+
+                        });
+
+                        $('#loading').addClass('hide')
+                        $('#btnAdd').removeClass('hide')
+                    }
+
+                })
+            })
+
+        }
+
+        function alterMeeting($uid) {
+            $('#shadow, #loading').removeClass('hide')
+
+            $.ajax({
+                url: '/activist_get_one_meeting/',
+                method: 'GET',
+                dataType: 'JSON',
+                data: {
+                    'id': $uid,
+                    csrfmiddlewaretoken: '{{ csrf_token }}'
+                },
+                success: function (args) {
+
+                    $('#dateId').attr('value', args[0].date);
+                    $('#placeId').attr('value', args[0].place);
+                    $('#titleId').attr('value', args[0].title);
+                    $('#meetingId').attr('value', args[0].id);
+                    $('#flagId').attr('value', 'alter');
+
+                    $.each(args[0].member, function (i, row) {
+                        const tag = document.createElement('option');
+                        tag.innerHTML = row;
+                        tag.setAttribute('value', row);
+                        $('#member').append(tag);
+
+                    });
+
+                    $.each(args[0].attendance, function (i, row) {
+                        const tag = document.createElement('option');
+                        tag.innerHTML = row;
+                        tag.setAttribute('value', row);
+                        $('#attend').append(tag);
+
+                    });
+
+                    $.each(args[0].absence, function (i, row) {
+                        const tag = document.createElement('option');
+                        tag.innerHTML = row;
+                        tag.setAttribute('value', row);
+                        $('#absent').append(tag);
+
+                    });
+
+
+                    $('#loading').addClass('hide')
+                    $('#btnAdd').removeClass('hide')
+                }
+
+            })
+
+
+        }
+
+        function MeetingSubmit() {
+            $('#addSubmit').click(function () {
+
+                //需要先把select的全部option设置为选中状态
+
+                //获取id=attend的下拉选
+                var attendElement = document.getElementById("attend");
+
+                //获取id=absent的下拉选
+                var absentElement = document.getElementById("absent");
+
+                var attendLen = attendElement.length;
+                var absentLen = absentElement.length;
+
+                for (var i = 0; i < attendLen; i++) {
+                    attendElement.options[i].selected = true;
+                }
+
+                for (var i = 0; i < absentLen; i++) {
+                    absentElement.options[i].selected = true;
+                }
+
+
+                var date = $('#dateId').val()
+                var place = $('#placeId').val()
+                var title = $('#titleId').val()
+                var attend = $('#attend').val()
+                var absent = $('#absent').val()
+                var flag = $('#flagId').val()
+                var id = $('#meetingId').val()
+
+                $.ajax({
+                    url: '/activist_set_meeting_record/',
+                    type: 'POST',
+                    data: {
+                        'id': id,
+                        'flag': flag,
+                        'date': date,
+                        'place': place,
+                        'title': title,
+                        'attend_list': attend,
+                        'absent_list': absent,
+                        csrfmiddlewaretoken: '{{ csrf_token }}'
+                    },
+                    //如果添加的数据的值有列表，则需要添加此属性
+                    //不支持字典，字典可序列化为字符串发送
+                    traditional: true,
+                    //dataType可以把字符串解释为json数据
+                    dataType: 'JSON',
+                    success: function (args) {
+                        if (args.status) {
+                            swal("提交成功！");
+                            setTimeout(function () {
+                                location.reload();
+                            }, 1000);
+
+                        } else {
+                            swal(args.msg);
+                        }
+                    }
+                })
+            })
+        }
+
+        function addCancel() {
+            $('#addCancel').click(function () {
+                location.reload()
+            })
+
+        }
+
+        function delMeeting($nid) {    /* 绑定事件 */
+            swal({
+                title: "亲，您确定删除此会议吗？",
+                text: "此操作不可逆，一旦执行删除，此会议数据将无法找回!",
+                icon: "warning",
+                buttons: true,
+                dangerMode: true,
+            })
+                .then((willDelete) => {
+                    if (willDelete) {
+                        swal("此会议已删除!", {
+                            icon: "success",
+                        });
+                        window.location.href = "/activist_del_one_meeting/?nid=" + $nid;
+                    } else {
+                    }
+                });
+        }
+
+    </script>
+
+
+{% endblock %}

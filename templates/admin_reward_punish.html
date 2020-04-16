@@ -1,0 +1,315 @@
+{% extends 'admin_layout.html' %}
+
+{% block css %}
+
+    <style type="text/css">
+        .shadow {
+            position: fixed;
+            top: 0;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background-color: black;
+            opacity: 0.5;
+            z-index: 999;
+        }
+
+        .mod {
+            position: fixed;
+            top: 30%;
+            left: 40%;
+            width: 300px;
+            height: 160px;
+            z-index: 1000;
+            border-radius: 10px;
+            background-color: white;
+
+        }
+
+        .hide {
+            display: none;
+        }
+
+
+    </style>
+
+
+{% endblock %}
+
+
+{% block content %}
+
+    <!-- Start content-page -->
+    <div class="content-page">
+
+        <!-- Start content-bar -->
+        <div class="content">
+
+            <div class="container-fluid">
+
+                <div class="row">
+                    <div class="col-xl-12">
+                        <div class="breadcrumb-holder">
+                            <h1 class="main-title float-left">奖惩管理</h1>
+                            <ol class="breadcrumb float-right">
+                                <li class="breadcrumb-item"></li>
+                                <li class="breadcrumb-item active"></li>
+                            </ol>
+                            <div class="clearfix"></div>
+                        </div>
+                    </div>
+                </div>
+                <!-- end row -->
+
+                <!-- Start content -->
+                <div>
+                    <div class="form-group">
+                        <p> 奖惩制度说明：通过设置奖励与惩罚的等级来对应奖励与惩罚的内容，等级各设置为1-3级，并且奖励与惩罚会相互抵消，具体如下：</p>
+                    </div>
+                    <form class="form-horizontal" method="post" action="/admin_reward_punish/">
+                        {% csrf_token %}
+                        <div class="row">
+                            <div class="col-xs-12 col-md-6 col-lg-6 col-xl-3">
+                                <div class="form-group">
+                                    <label class="form-inline">奖励1级：{{ rpForm.reward_1 }}</label>
+                                    <label class="form-inline">惩罚1级：{{ rpForm.punish_1 }}</label>
+
+                                </div>
+                            </div>
+                            <div class="col-xs-12 col-md-6 col-lg-6 col-xl-3">
+                                <div class="form-group">
+                                    <label class="form-inline">奖励2级：{{ rpForm.reward_2 }}</label>
+                                    <label class="form-inline">惩罚2级：{{ rpForm.punish_2 }}</label>
+                                </div>
+                            </div>
+
+                            <div class="col-xs-12 col-md-6 col-lg-6 col-xl-3">
+                                <div class="form-group">
+                                    <label class="form-inline">奖励3级：{{ rpForm.reward_3 }}</label>
+                                    <label class="form-inline">惩罚3级：{{ rpForm.punish_3 }}</label>
+                                </div>
+                            </div>
+
+                            <div class="col-xs-12 col-md-6 col-lg-6 col-xl-3">
+                                <div class="form-group" style="padding: 10px">
+                                    <input class="btn btn-primary btn-sm" type="submit" value="修改"> &nbsp;&nbsp;&nbsp;
+                                    <a class="btn btn-warning btn-sm" onclick="openResult()">重置所有党员奖惩信息</a>
+                                    <p style="padding-top: 10px">提示:
+                                        <span style="color: red">{{ msg }}</span>
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+
+                    </form>
+
+
+                </div>
+
+                <table class="table table-hover">
+                    <thead>
+                    <tr>
+                        <th>编号</th>
+                        <th>用户名</th>
+                        <th>姓名</th>
+                        <th>性别</th>
+                        <th>身份</th>
+                        <th>手机</th>
+                        <th>奖励</th>
+                        <th>惩罚</th>
+                        <th>奖惩操作</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for row in user_list %}
+                        <tr>
+                            <th scope="row">{{ row.member_id }}</th>
+                            <td>{{ row.user_account.username }}</td>
+                            <td>{{ row.member_name }}</td>
+                            <td>{{ row.member_gender }}</td>
+                            <td>{{ row.member_status }}</td>
+                            <td>{{ row.member_phone }}</td>
+                            <td>{{ row.rewardpunishinfo.reward_level }}级</td>
+                            <td>{{ row.rewardpunishinfo.punish_level }}级</td>
+                            <td>
+                                <a type="button" onclick="showRewardModal('{{ row.member_id }}')"
+                                   class="btn btn-info btn-sm">奖励</a>
+                                <a type="button" onclick="showPunishModal('{{ row.member_id }}')"
+                                   class="btn btn-warning btn-sm">惩罚</a>
+                            </td>
+                        </tr>
+                    {% endfor %}
+
+
+                    </tbody>
+                </table>
+
+
+                <nav aria-label="Page navigation">
+                    <ul class="pagination">
+                        {{ page_info.pager | safe }}
+
+                    </ul>
+                </nav>
+
+
+                <!-- End content -->
+            </div>
+
+            <div class="shadow hide" id="shadow"></div>
+
+            <!--对话框修改奖励信息-->
+            <div class="mod hide" id="modReward">
+                {% csrf_token %}
+
+                <p style="margin-top: 20px; text-align: center">请选择奖励等级:</p>
+                <div style="text-align: center">
+
+                    <input id="rid" name="rid" value="" style="display:none">
+
+                    <select id="reward_level">
+                        <option value="0">无奖励</option>
+                        <option value="1">奖励1级</option>
+                        <option value="2">奖励2级</option>
+                        <option value="3">奖励3级</option>
+
+                    </select>
+                </div>
+                <div style="text-align: center; padding-top: 20px">
+                    <input type="button" value="提交" onclick="AjaxSendReward()"/>
+                    <input type="button" value="取消" onclick="cancelModal()"/>
+                    <span id="errormsg"></span>
+                </div>
+            </div>
+
+            <!--对话框修改惩罚信息-->
+            <div class="mod hide" id="modPunish">
+                {% csrf_token %}
+
+                <p style="margin-top: 20px; text-align: center">请选择惩罚等级:</p>
+                <div style="text-align: center">
+
+                    <input id="pid" name="pid" value="" style="display:none">
+
+                    <select id="punish_level">
+                        <option value="0">无惩罚</option>
+                        <option value="1">惩罚1级</option>
+                        <option value="2">惩罚2级</option>
+                        <option value="3">惩罚3级</option>
+
+                    </select>
+
+                </div>
+                <div style="text-align: center; padding-top: 20px">
+                    <input type="button" value="提交" onclick="AjaxSendPunish()"/>
+                    <input type="button" value="取消" onclick="cancelModal()"/>
+                    <span id="errormsg"></span>
+                </div>
+            </div>
+
+
+        </div>
+        <!-- END content-bar -->
+
+
+    </div>
+    <!-- End content-page -->
+
+{% endblock %}
+
+{% block js %}
+    <script src="/static/assets/js/jquery-1.12.4.js"></script>
+
+
+    <script>
+        function showRewardModal($id) {
+            document.getElementById('shadow').classList.remove('hide')
+            document.getElementById('modReward').classList.remove('hide')
+            $("#rid").attr("value", $id);
+        }
+
+        function showPunishModal($id) {
+            document.getElementById('shadow').classList.remove('hide')
+            document.getElementById('modPunish').classList.remove('hide')
+            $("#pid").attr("value", $id);
+
+        }
+
+
+        function cancelModal() {
+            document.getElementById('shadow').classList.add('hide')
+            document.getElementById('modReward').classList.add('hide')
+            document.getElementById('modPunish').classList.add('hide')
+
+        }
+
+
+        function AjaxSendReward() {
+            $.ajax({
+                url: '/admin_reward_set/',
+                type: 'POST',
+                data: {
+                    'id': $('#rid').val(),
+                    'reward_level': $('#reward_level').val(),
+                    csrfmiddlewaretoken: '{{ csrf_token }}'
+                },
+                success: function (data) {
+                    console.log(data)
+
+                    if (data == 'ok') {
+                        swal("设置成功！");
+                            setTimeout(function () {
+                                location.href = '/admin_reward_punish/';
+                            }, 1000);
+                    } else {
+                        $('#errormsg').text(data)
+                    }
+                }
+            })
+        }
+
+        function AjaxSendPunish() {
+            $.ajax({
+                url: '/admin_punish_set/',
+                type: 'POST',
+                data: {
+                    'id': $('#pid').val(),
+                    'punish_level': $('#punish_level').val(),
+                    csrfmiddlewaretoken: '{{ csrf_token }}'
+                },
+                success: function (data) {
+                    if (data == 'ok') {
+                        swal("设置成功！");
+                            setTimeout(function () {
+                                location.href = '/admin_reward_punish/';
+                            }, 1000);
+                    } else {
+                        $('#errormsg').text(data)
+                    }
+                }
+            })
+        }
+
+        function openResult() {    /* 绑定事件 */
+
+            swal({
+                title: "确定重置所有党员的奖惩信息吗？",
+                text: "此操作不可逆，一旦重置，所有党员的奖惩等级都设为0级!",
+                icon: "warning",
+                buttons: true,
+                dangerMode: true,
+            })
+                .then((willDelete) => {
+                    if (willDelete) {
+                        swal("重置成功!", {
+                            icon: "success",
+                        });
+                        window.location.href = "/reset_reward_punish/"
+                    } else {
+                    }
+                });
+        }
+    </script>
+
+
+{% endblock %}

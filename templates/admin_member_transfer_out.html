@@ -1,0 +1,130 @@
+{% extends 'admin_layout.html' %}
+
+{% block css %}
+
+    <style type="text/css">
+
+    </style>
+
+
+{% endblock %}
+
+
+{% block content %}
+
+    <!-- Start content-page -->
+    <div class="content-page">
+
+        <!-- Start content-bar -->
+        <div class="content">
+
+            <div class="container-fluid">
+
+                <div class="row">
+                    <div class="col-xl-12">
+                        <div class="breadcrumb-holder">
+                            <h1 class="main-title float-left">党员转出</h1>
+                            <ol class="breadcrumb float-right">
+                                <li class="breadcrumb-item"></li>
+                                <li class="breadcrumb-item active"></li>
+                            </ol>
+                            <div class="clearfix"></div>
+                        </div>
+                    </div>
+                </div>
+                <!-- end row -->
+            </div>
+
+            <div class="form-control">
+                <p>党员调动包括党员组织关系转出和转入，当前为党员转出页面<a type="button" href="/admin_member_transfer_in/">点此切换</a>为党员转入页面</p>
+                <label>转出确认日期设置为：</label>
+                <input type="date" id="dateId" value="{{ date.out_date_set|date:'Y-m-d' }}">
+            </div>
+
+
+            <table class="table table-hover">
+                <thead>
+                <tr>
+                    <th>编号</th>
+                    <th>用户名</th>
+                    <th>姓名</th>
+                    <th>性别</th>
+                    <th>政治面貌</th>
+                    <th>入党日期</th>
+                    <th>志愿时长</th>
+                    <th>手机</th>
+                    <th>申请转出组织</th>
+                    <th>操作</th>
+                </tr>
+                </thead>
+                <tbody>
+
+
+                {% for row in data_list %}
+                    <tr>
+                        <th scope="row">{{ row.member_id }}</th>
+                        <td>{{ row.user_account.username }}</td>
+                        <td>{{ row.member_name }}</td>
+                        <td>{{ row.member_gender }}</td>
+                        <td>{{ row.member_status }}</td>
+                        <td>{{ row.first_date|date:'Y-m-d' }}</td>
+                        <td>{{ row.voluntary_time }} 小时</td>
+                        <td>{{ row.member_phone }}</td>
+                        <td>{{ row.leave_to_party }}</td>
+                        <td>
+                            <a type="button" onclick="showRewardModal('{{ row.member_id }}')"
+                               class="btn btn-info btn-sm">批准转出</a>
+                        </td>
+                    </tr>
+                {% endfor %}
+
+
+                </tbody>
+            </table>
+
+
+            <nav aria-label="Page navigation">
+                <ul class="pagination">
+                    {{ page_info.pager | safe }}
+
+                </ul>
+            </nav>
+
+
+        </div>
+        <!-- END content-bar -->
+
+        <!-- Start content -->
+
+        <!-- End content -->
+
+    </div>
+    <!-- End content-page -->
+
+{% endblock %}
+
+{% block js %}
+
+    <script>
+        function showRewardModal($nid) {    /* 绑定事件 */
+            var date = $('#dateId').val()
+
+            swal({
+                title: "确定批准该党员转出吗？",
+                icon: "warning",
+                buttons: true,
+                dangerMode: true,
+            })
+                .then((willDelete) => {
+                    if (willDelete) {
+                        swal("设置成功！!", {
+                            icon: "success",
+                        });
+                window.location.href = "/submit_member_transfer_out/?nid=" + $nid + "&date=" + date;
+                    } else {
+                    }
+                });
+        }
+    </script>
+
+{% endblock %}

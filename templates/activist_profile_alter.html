@@ -1,0 +1,177 @@
+{% extends 'activist_layout.html' %}
+
+
+{% block css %}
+
+    <style type="text/css">
+        .formCenter {
+            width: 60%;
+            margin: 0 auto;
+            margin-top: 50px;
+            text-align: center;
+        }
+
+        .table-center {
+            width: 100%;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        .table-space {
+            border-collapse: separate;
+            border-spacing: 5px 15px; /* 水平间距 垂直间距 */
+
+        }
+
+        td {
+            display: table-cell;
+            text-align: center;
+            vertical-align: middle;
+        }
+
+
+    </style>
+
+
+{% endblock %}
+
+
+
+{% block content %}
+    <!-- Start content-page -->
+    <div class="content-page">
+
+        <!-- Start content-bar -->
+        <div class="content">
+
+            <div class="container-fluid">
+
+                <div class="row">
+                    <div class="col-xl-12">
+                        <div class="breadcrumb-holder">
+                            <h1 class="main-title float-left">修改资料</h1>
+                            <ol class="breadcrumb float-right">
+                                <li class="breadcrumb-item"></li>
+                                <li class="breadcrumb-item active"></li>
+                            </ol>
+                            <div class="clearfix"></div>
+                        </div>
+                    </div>
+                </div>
+                <!-- end row -->
+            </div>
+
+
+        </div>
+        <!-- END content-bar -->
+
+        <div class="card mb-3 formCenter">
+            <div class="card-header">
+                <h3><i class="fa fa-user"></i> 修改个人信息</h3>
+            </div>
+
+            <div class="card-body ">
+
+                <form method="post" action="/activist_profile_alter/">
+                    {% csrf_token %}
+                    <table class="table-space table-center">
+
+                    <tr>
+                        <td>用户名</td>
+                        <td><input type="text" class="form-control" disabled="disabled"
+                                   value="{{ data_list.username }}">
+                        </td>
+                        <td>真实姓名</td>
+                        <td>{{ alterinfoForm.activist_name }}
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td>账号类型</td>
+                        <td><input type="text" class="form-control" disabled="disabled"
+                                   value="{{ data_list.usertype }}">
+                        </td>
+                        <td>性别</td>
+                        <td>
+                            {{ alterinfoForm.activist_gender }}
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td>Email</td>
+                        <td>
+                            {{ alterinfoForm.activist_email }}
+                        </td>
+                        <td>手机</td>
+                        <td>
+                            {{ alterinfoForm.activist_phone }}
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td>申请入党日期</td>
+                        <td>
+                            {{ alterinfoForm.apply_date }}
+                        </td>
+                        <td>志愿时长</td>
+                        <td>
+                            {{ alterinfoForm.voluntary_time }}
+                        </td>
+
+                    </tr>
+
+                </table>
+                    <div class="">
+                        <input style="margin: 20px" type="submit" class="btn btn-info" value="提交">
+                    </div>
+
+                </form>
+
+                <div style="float: left">
+                    修改提示：
+                    {% if flag %}
+                        修改信息成功,<strong id="second_show">5</strong>秒钟后跳转个人信息页面!
+                    {% endif %}
+                    {{ alterinfoForm.activist_name.errors.0 }}
+                    {{ alterinfoForm.activist_email.errors.0 }}
+                    {{ alterinfoForm.apply_date.errors.0 }}
+                    {{ alterinfoForm.voluntary_time.errors.0 }}
+                </div>
+            </div>
+
+        </div>
+        <div class="text-center" style="margin-top: 50px">
+
+        </div>
+
+    </div>
+    <!-- END content-page -->
+
+{% endblock %}
+
+{% block js %}
+
+    <script>
+        $('#id_activist_gender').attr('style', "width: 100%");
+        $('#id_activist_gender').attr('class', "form-control");
+    </script>
+
+    <script>
+        var timeout = 5;
+
+        function showError() {
+            document.getElementById("second_show").innerHTML = timeout;
+            timeout--;
+            if (timeout == 0) {
+                window.location.href = "/activist_profile/";
+            } else {
+                setTimeout("showError()", 1000);
+            }
+        }
+
+        showError();
+    </script>
+
+{% endblock %}
+
+

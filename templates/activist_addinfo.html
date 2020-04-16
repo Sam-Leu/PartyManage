@@ -1,0 +1,166 @@
+{% extends 'activist_layout.html' %}
+
+
+{% block css %}
+
+    <style type="text/css">
+        .formCenter {
+            width: 60%;
+            margin: 0 auto;
+            margin-top: 30px;
+            text-align: center;
+        }
+
+        .table-center {
+            width: 100%;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        .table-space {
+            border-collapse: separate;
+            border-spacing: 5px 15px; /* 水平间距 垂直间距 */
+
+        }
+
+    </style>
+
+
+{% endblock %}
+
+
+
+{% block content %}
+    <!-- Start content-page -->
+    <div class="content-page">
+
+        <!-- Start content-bar -->
+        <div class="content">
+
+            <div class="container-fluid">
+
+                <div class="row">
+                    <div class="col-xl-12">
+                        <div class="breadcrumb-holder">
+                            <h1 class="main-title float-left">完善信息</h1>
+                            <ol class="breadcrumb float-right">
+                                <li class="breadcrumb-item"></li>
+                                <li class="breadcrumb-item active"></li>
+                            </ol>
+                            <div class="clearfix"></div>
+                        </div>
+                    </div>
+                </div>
+                <!-- end row -->
+            </div>
+
+
+        </div>
+        <!-- END content-bar -->
+
+        <div class="card mb-3 formCenter">
+            <div class="card-header">
+                <h3><i class="fa fa-user"></i> 完善信息</h3>
+            </div>
+
+            <div class="card-body ">
+
+                <form method="post" action="/activist_addinfo/">
+                    {% csrf_token %}
+                    <table class="table-space table-center">
+
+                        <tr>
+                            <td>用户名</td>
+                            <td><input class="form-control" type="text" disabled="disabled"
+                                       value="{{ data_list.username }}"></td>
+                            <td>账户类型</td>
+                            <td><input class="form-control" type="text" disabled="disabled"
+                                       value="{{ data_list.usertype }}"></td>
+                        </tr>
+
+                        <tr>
+                            <td>姓名</td>
+                            <td><input class="form-control" type="text" disabled="disabled"
+                                       value="{{ data_list.activist_name }}"></td>
+                            <td>性别</td>
+                            <td><input class="form-control" type="text" disabled="disabled"
+                                       value="{{ data_list.activist_gender }}"></td>
+
+                        </tr>
+
+                        <tr>
+                            <td>Email</td>
+                            <td>{{ addinfoForm.activist_email }}</td>
+                            <td>手机</td>
+                            <td>{{ addinfoForm.activist_phone }}</td>
+                        </tr>
+
+                        <tr>
+
+                            <td>申请入党日期</td>
+                            <td>{{ addinfoForm.apply_date }}</td>
+                            <td>志愿时长</td>
+                            <td>{{ addinfoForm.voluntary_time }}</td>
+                        </tr>
+
+
+                    </table>
+                    <div class="formCenter">
+                        <input class="btn btn-primary" style="margin-bottom: 20px" type="submit" value="提交">
+
+
+                    </div>
+
+                </form>
+
+                <div class="">
+                    {% if flag %}
+                        完善信息成功,<strong id="second_show">5</strong>秒钟后跳转个人信息页面!
+
+                    {% endif %}
+                    {{ addinfoForm.activist_email.errors.0 }}
+                    {{ addinfoForm.activist_phone.errors.0 }}
+                    {{ addinfoForm.apply_date.errors.0 }}
+                    {{ addinfoForm.voluntary_time.errors.0 }}
+                </div>
+            </div>
+
+        </div>
+        <div class="text-center" style="margin-top: 80px">
+
+            {% if tag %}
+
+                <h3>信息已完善,<strong id="second_show">5</strong>秒钟后跳转个人信息页面!</h3>
+                <script>
+                    var obj = document.getElementById("cont");
+                    obj.parentNode.removeChild(obj);
+                </script>
+
+            {% endif %}
+
+        </div>
+
+    </div>
+    <!-- END content-page -->
+
+{% endblock %}
+
+{% block js %}
+
+    <script>
+        var timeout = 5;
+
+        function showError() {
+            document.getElementById("second_show").innerHTML = timeout;
+            timeout--;
+            if (timeout == 0) {
+                window.location.href = "/activist_profile/";
+            } else {
+                setTimeout("showError()", 1000);
+            }
+        }
+
+        showError();
+    </script>
+
+{% endblock %}

@@ -1,0 +1,143 @@
+{% extends 'member_layout.html' %}
+
+{% block css %}
+
+    <style type="text/css">
+        ::-webkit-scrollbar {
+            display: none
+        }
+
+        .formCenter {
+            width: 60%;
+            margin: 0 auto;
+            margin-top: 50px;
+            text-align: center;
+        }
+
+        .table-center {
+            width: 100%;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        .table-space {
+            border-collapse: separate;
+            border-spacing: 5px 15px; /* 水平间距 垂直间距 */
+
+        }
+
+        td {
+            display: table-cell;
+            text-align: center;
+            vertical-align: middle;
+        }
+
+        .info {
+            background-color: #EBEBEB;
+            width: 100%;
+            height: 36px;
+            line-height: 36px;
+            border-radius: 3px;
+            text-align: center;
+            overflow: scroll;
+        }
+
+
+    </style>
+
+{% endblock %}
+
+
+
+{% block content %}
+    <!-- Start content-page -->
+    <div class="content-page">
+
+        <!-- Start content-bar -->
+        <div class="content">
+
+            <div class="container-fluid">
+
+                <div class="row">
+                    <div class="col-xl-12">
+                        <div class="breadcrumb-holder">
+                            <h1 class="main-title float-left">我的奖惩</h1>
+                            <ol class="breadcrumb float-right">
+                                <li class="breadcrumb-item"></li>
+                                <li class="breadcrumb-item active"></li>
+                            </ol>
+                            <div class="clearfix"></div>
+                        </div>
+                    </div>
+                </div>
+                <!-- end row -->
+            </div>
+
+
+        </div>
+        <!-- END content-bar -->
+
+        <div class="card mb-3 formCenter">
+            <div class="card-header">
+                <h3><i class="fa fa-star-half-full bigfonts"></i> 我的奖惩</h3>
+            </div>
+
+            <div class="card-body ">
+
+
+                <table class="table-space table-center">
+
+                    <tr>
+                        <td>奖励1级:</td>
+                        <td>
+                            <div class="info">{{ data_reward_punish.reward_1 }}</div>
+                        </td>
+                        <td>惩罚1级:</td>
+                        <td>
+                            <div class="info">{{ data_reward_punish.punish_1 }}</div>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td>奖励2级:</td>
+                        <td>
+                            <div class="info">{{ data_reward_punish.reward_2 }}</div>
+                        </td>
+                        <td>惩罚2级:</td>
+                        <td>
+                            <div class="info">{{ data_reward_punish.punish_2 }}</div>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td>奖励3级:</td>
+                        <td>
+                            <div class="info">{{ data_reward_punish.reward_3 }}</div>
+                        </td>
+                        <td>惩罚3级:</td>
+                        <td>
+                            <div class="info">{{ data_reward_punish.punish_3 }}</div>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td>我的奖励等级</td>
+                        <td>
+                            <div class="info">{{ data_info.reward_level }} 级</div>
+                        </td>
+                        <td>我的惩罚等级</td>
+                        <td>
+                            <div class="info">{{ data_info.punish_level }} 级</div>
+                        </td>
+                    </tr>
+
+
+                </table>
+
+            </div>
+        </div>
+
+    </div>
+    <!-- END content-page -->
+
+{% endblock %}

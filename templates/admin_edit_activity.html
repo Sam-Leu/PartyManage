@@ -1,0 +1,102 @@
+{% extends 'admin_layout.html' %}
+
+{% block css %}
+
+    {{ content_form.media }}
+
+    <style type="text/css">
+
+        .btn_center {
+            margin: 0 auto;
+            margin-top: 5px;
+        }
+
+        #id_content {
+            padding-top: 12px;
+        }
+
+        #id_title {
+            margin: 0 10px 0 10px;
+        }
+
+        #id_time {
+            margin: 0 10px 0 10px;
+        }
+
+        #id_place {
+            margin: 0 10px 0 10px;
+        }
+
+
+    </style>
+
+
+{% endblock %}
+
+{% block content %}
+
+    <!-- Start content-page -->
+    <div class="content-page">
+
+        <!-- Start content-bar -->
+        <div class="content">
+
+            <div class="container-fluid">
+
+                <div class="row">
+                    <div class="col-xl-12">
+                        <div class="breadcrumb-holder">
+                            <h1 class="main-title float-left">党日活动编辑</h1>
+                            <ol class="breadcrumb float-right">
+                                <li class="breadcrumb-item"></li>
+                                <li class="breadcrumb-item active"></li>
+                            </ol>
+                            <div class="clearfix"></div>
+                        </div>
+                    </div>
+                </div>
+                <!-- end row -->
+            </div>
+            <div class="">
+
+
+                <form class="form-inline" action="" method="post">
+                    {% csrf_token %}
+
+                    {{ content_form }}
+
+                    <input type="submit" class="btn btn-primary btn-sm btn_center" value="保存">
+                </form>
+            </div>
+
+        </div>
+        <!-- END content-bar -->
+
+        <!-- Start content -->
+
+        <!-- End content -->
+
+    </div>
+    <!-- End content-page -->
+
+{% endblock %}
+
+{% block js %}
+
+    <script>
+
+        var msg = '{{ msg|safe }}';
+
+        if (msg == 'OK') {
+            swal("编辑党日活动成功！");
+            setTimeout(function () {
+                window.location.href = "/admin_activity_manage/";
+            }, 2000);
+        }
+        else if (msg == 'Error') {
+            swal('内容输入不完整或有误，请重新输入！')
+        }
+
+    </script>
+
+{% endblock %}

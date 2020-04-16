@@ -1,0 +1,154 @@
+{% extends 'admin_layout.html' %}
+
+
+{% block content %}
+
+    <!-- Start content-page -->
+    <div class="content-page">
+
+        <!-- Start content-bar -->
+        <div class="content">
+
+            <div class="container-fluid">
+
+                <div class="row">
+                    <div class="col-xl-12">
+                        <div class="breadcrumb-holder">
+                            <h1 class="main-title float-left">首页</h1>
+                            <ol class="breadcrumb float-right">
+                                <li class="breadcrumb-item"></li>
+                                <li class="breadcrumb-item active"></li>
+                            </ol>
+                            <div class="clearfix"></div>
+                        </div>
+                    </div>
+                </div>
+                <!-- end row -->
+            </div>
+
+            {% if flag %}
+                <h1 class="text-center">温馨提示：</h1>
+                <h2>&nbsp;</h2>
+                <h3 class="text-center">新用户您好，请先完善用户信息再继续使用本系统</h3>
+                <h2>&nbsp;</h2>
+                <p class="text-center"><a href="/admin_addinfo/">点此跳转完善个人信息</a></p>
+            {% elif not flag %}
+                <div>
+
+
+                    <div class="alert alert-success" role="alert">
+                        <h4 class="alert-heading">欢迎使用党务信息管理系统</h4>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-xs-12 col-md-6 col-lg-6 col-xl-3">
+                            <div class="card-box noradius noborder bg-default">
+                                <i class="fa fa-user-circle-o float-right text-white"></i>
+                                <h6 class="text-white text-uppercase m-b-20">管理员</h6>
+                                <h1 class="m-b-20 text-white counter">{{ admin_count }}</h1>
+                                <span class="text-white">人</span>
+                            </div>
+                        </div>
+
+                        <div class="col-xs-12 col-md-6 col-lg-6 col-xl-3">
+                            <div class="card-box noradius noborder bg-warning">
+                                <i class="fa fa-user-o float-right text-white"></i>
+                                <h6 class="text-white text-uppercase m-b-20">正式党员</h6>
+                                <h1 class="m-b-20 text-white counter">{{ formal_member_count }}</h1>
+                                <span class="text-white">人</span>
+                            </div>
+                        </div>
+
+                        <div class="col-xs-12 col-md-6 col-lg-6 col-xl-3">
+                            <div class="card-box noradius noborder bg-info">
+                                <i class="fa fa-user-o float-right text-white"></i>
+                                <h6 class="text-white text-uppercase m-b-20">预备党员</h6>
+                                <h1 class="m-b-20 text-white counter">{{ informal_member_count }}</h1>
+                                <span class="text-white">人</span>
+                            </div>
+                        </div>
+
+                        <div class="col-xs-12 col-md-6 col-lg-6 col-xl-3">
+                            <div class="card-box noradius noborder bg-danger">
+                                <i class="fa fa-user-circle float-right text-white"></i>
+                                <h6 class="text-white text-uppercase m-b-20">积极分子</h6>
+                                <h1 class="m-b-20 text-white counter">{{ activist_count }}</h1>
+                                <span class="text-white">人</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div>
+                        <div class="card mb-3">
+                            <div class="card-header">
+                                <h3><i class="fa fa-square-o"></i> {{ party_info.party_name }}</h3>
+
+                            </div>
+
+                            <div class="card-body">
+
+                                <div class="row">
+                                    <div class="col-sm-3">
+                                        <div class="card">
+                                            <div class="card-body">
+                                                <h4 class="card-title">支部书记</h4>
+                                                <p class="card-text">姓名：{{ party_secretary.member_name }}</p>
+                                                <p class="card-text">性别：{{ party_secretary.member_gender }}</p>
+                                                <p class="card-text">手机：{{ party_secretary.member_phone }}</p>
+                                                <p class="card-text">志愿时长：{{ party_secretary.voluntary_time }}</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-3">
+                                        <div class="card">
+                                            <div class="card-body">
+                                                <h4 class="card-title">组织委员</h4>
+                                                <p class="card-text">姓名：{{ party_organizer.member_name }}</p>
+                                                <p class="card-text">性别：{{ party_organizer.member_gender }}</p>
+                                                <p class="card-text">手机：{{ party_organizer.member_phone }}</p>
+                                                <p class="card-text">志愿时长：{{ party_organizer.voluntary_time }}</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-3">
+                                        <div class="card">
+                                            <div class="card-body">
+                                                <h4 class="card-title">宣传委员</h4>
+                                                <p class="card-text">姓名：{{ party_publicity.member_name }}</p>
+                                                <p class="card-text">性别：{{ party_publicity.member_gender }}</p>
+                                                <p class="card-text">手机：{{ party_publicity.member_phone }}</p>
+                                                <p class="card-text">志愿时长：{{ party_publicity.voluntary_time }}</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-3">
+                                        <div class="card">
+                                            <div class="card-body">
+                                                <h4 class="card-title">纪检委员</h4>
+                                                <p class="card-text">姓名：{{ party_discipline.member_name }}</p>
+                                                <p class="card-text">性别：{{ party_discipline.member_gender }}</p>
+                                                <p class="card-text">手机：{{ party_discipline.member_phone }}</p>
+                                                <p class="card-text">志愿时长：{{ party_discipline.voluntary_time }}</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div><!-- end card-->
+                    </div>
+
+                </div>
+            {% endif %}
+
+
+        </div>
+        <!-- END content-bar -->
+
+        <!-- Start content -->
+        <!-- End content -->
+
+    </div>
+    <!-- End content-page -->
+
+{% endblock %}

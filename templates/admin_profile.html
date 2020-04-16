@@ -1,0 +1,113 @@
+{% extends 'admin_layout.html' %}
+
+{% block css %}
+
+    <style type="text/css">
+        .formCenter {
+            width: 50%;
+            margin: 0 auto;
+            margin-top: 60px;
+            text-align: center;
+        }
+
+        .table-space {
+            border-collapse: separate;
+            border-spacing: 5px 15px; /* 水平间距 垂直间距 */
+
+        }
+
+        td {
+            display: table-cell;
+            text-align: center;
+            vertical-align: middle;
+        }
+
+
+    </style>
+
+{% endblock %}
+
+
+
+{% block content %}
+    <!-- Start content-page -->
+    <div class="content-page">
+
+        <!-- Start content-bar -->
+        <div class="content">
+
+            <div class="container-fluid">
+
+                <div class="row">
+                    <div class="col-xl-12">
+                        <div class="breadcrumb-holder">
+                            <h1 class="main-title float-left">个人信息</h1>
+                            <ol class="breadcrumb float-right">
+                                <li class="breadcrumb-item"></li>
+                                <li class="breadcrumb-item active"></li>
+                            </ol>
+                            <div class="clearfix"></div>
+                        </div>
+                    </div>
+                </div>
+                <!-- end row -->
+            </div>
+
+
+        </div>
+        <!-- END content-bar -->
+
+        <div class="card mb-3 formCenter">
+            <div class="card-header">
+                <h3><i class="fa fa-user"></i> 个人信息</h3>
+            </div>
+
+            <div class="card-body ">
+
+
+                <table class="table-space">
+
+                    <tr>
+                        <td>用户名</td>
+                        <td><input type="text" class="form-control" disabled="disabled"
+                                   value="{{ data_list.username }}">
+                        </td>
+                        <td>真实姓名</td>
+                        <td><input type="text" class="form-control" disabled="disabled"
+                                   value="{{ data_list.truename }}">
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td>账号类型</td>
+                        <td><input type="text" class="form-control" disabled="disabled"
+                                   value="{{ data_list.usertype }}">
+                        </td>
+                        <td>性别</td>
+                        <td><input type="text" class="form-control" disabled="disabled" value="{{ data_list.gender }}">
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td>Email</td>
+                        <td><input type="text" class="form-control" disabled="disabled" value="{{ data_list.email }}">
+                        </td>
+                        <td>手机</td>
+                        <td><input type="text" class="form-control" disabled="disabled" value="{{ data_list.phone }}">
+                        </td>
+                    </tr>
+
+                    <tr>
+
+                        <td colspan="2"><a class="btn btn-info btn-sm" href="/admin_profile_alter/">修改资料</a></td>
+                        <td colspan="2"><a class="btn btn-warning btn-sm" href="/admin_pwd_alter/">修改密码</a></td>
+                    </tr>
+                </table>
+
+            </div>
+        </div>
+
+    </div>
+    <!-- END content-page -->
+
+{% endblock %}
