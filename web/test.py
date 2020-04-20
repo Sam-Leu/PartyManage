@@ -1,24 +1,27 @@
-# INSERT INTO `db_PartyManage`.`web_applyinfo` (`activity_id`, `member_id`) VALUES ('13', '1');
-# INSERT INTO `db_PartyManage`.`web_applyinfo` (`activity_id`, `member_id`) VALUES ('13', '3');
-# INSERT INTO `db_PartyManage`.`web_applyinfo` (`activity_id`, `member_id`) VALUES ('13', '4');
-# INSERT INTO `db_PartyManage`.`web_applyinfo` (`activity_id`, `member_id`) VALUES ('13', '5');
-# INSERT INTO `db_PartyManage`.`web_applyinfo` (`activity_id`, `member_id`) VALUES ('13', '6');
-# INSERT INTO `db_PartyManage`.`web_applyinfo` (`activity_id`, `member_id`) VALUES ('13', '8');
-# INSERT INTO `db_PartyManage`.`web_applyinfo` (`activity_id`, `member_id`) VALUES ('13', '9');
-# INSERT INTO `db_PartyManage`.`web_applyinfo` (`activity_id`, `member_id`) VALUES ('13', '13');
-# INSERT INTO `db_PartyManage`.`web_applyinfo` (`activity_id`, `member_id`) VALUES ('13', '13');
-# INSERT INTO `db_PartyManage`.`web_applyinfo` (`activity_id`, `member_id`) VALUES ('13', '13');
-# INSERT INTO `db_PartyManage`.`web_applyinfo` (`activity_id`, `member_id`) VALUES ('13', '14');
-# INSERT INTO `db_PartyManage`.`web_applyinfo` (`activity_id`, `member_id`) VALUES ('13', '15');
-# INSERT INTO `db_PartyManage`.`web_applyinfo` (`activity_id`, `member_id`) VALUES ('13', '16');
-# INSERT INTO `db_PartyManage`.`web_applyinfo` (`activity_id`, `member_id`) VALUES ('13', '17');
-# INSERT INTO `db_PartyManage`.`web_applyinfo` (`activity_id`, `member_id`) VALUES ('13', '18');
-# INSERT INTO `db_PartyManage`.`web_applyinfo` (`activity_id`, `member_id`) VALUES ('13', '19');
-# INSERT INTO `db_PartyManage`.`web_applyinfo` (`activity_id`, `member_id`) VALUES ('13', '20');
-# INSERT INTO `db_PartyManage`.`web_applyinfo` (`activity_id`, `member_id`) VALUES ('13', '22');
-# INSERT INTO `db_PartyManage`.`web_applyinfo` (`activity_id`, `member_id`) VALUES ('13', '23');
-# INSERT INTO `db_PartyManage`.`web_applyinfo` (`activity_id`, `member_id`) VALUES ('13', '28');
-# INSERT INTO `db_PartyManage`.`web_applyinfo` (`activity_id`, `member_id`) VALUES ('13', '29');
-# INSERT INTO `db_PartyManage`.`web_applyinfo` (`activity_id`, `member_id`) VALUES ('13', '30');
-# INSERT INTO `db_PartyManage`.`web_applyinfo` (`activity_id`, `member_id`) VALUES ('13', '31');
-# INSERT INTO `db_PartyManage`.`web_applyinfo` (`activity_id`, `member_id`) VALUES ('13', '32');
+
+v1 = 1 or 3
+print(v1)
+
+v2 = 1 and 3
+print(v2)
+
+v3 = 0 and 2 and 1
+print(v3)
+
+v4 = 0 and 2 or 1
+print(v4)
+
+v5 = 0 and 2 or 1 or 4
+print(v5)
+
+v6 = 0 or False and 1
+print(v6)
+
+
+k = 1000
+while k > 1:
+    print(k)
+    k = k/2
+
+
+print(7 % 5)

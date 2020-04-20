@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'rbac',
     'web',
     'DjangoUeditor',
+    'django_crontab',
 ]
 
 MIDDLEWARE = [
@@ -70,7 +71,6 @@ TEMPLATES = [
         },
     },
 ]
-
 
 WSGI_APPLICATION = 'PartyManage.wsgi.application'
 
@@ -126,12 +126,10 @@ USE_L10N = True
 
 USE_TZ = True
 
-
 STATIC_URL = '/static/'
 STATICFILES_DIRS = (
     os.path.join(BASE_DIR, 'static'),
 )
-
 
 AUTH_USER_MODEL = 'rbac.UserProfile'
 
@@ -156,7 +154,6 @@ CAPTCHA_TIMEOUT = 1  # 超时(minutes)
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 MEDIA_URL = '/media/'
 
-
 PERMISSION_SESSION_KEY = "permission_url_list_key"
 VALID_URL_LIST = [
     '/login/',
@@ -164,3 +161,8 @@ VALID_URL_LIST = [
     '/captcha/',
 ]
 
+# 定时执行任务参数配置
+CRONJOBS = [
+    # 每天执行一次
+    ('0 8 * * * *', 'web.tasks.alter_on_time','>>/Users/one/PycharmProjects/PartyManage/static/log/text.log')
+]
